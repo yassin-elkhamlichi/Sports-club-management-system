@@ -1,0 +1,9 @@
+spring:
+  application: name=sport_club_projet
+
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sportClub&CreateDatabaseIfNotExist=true
+    username: ${USERNAME}
+    password: ${PASSWORD}
+

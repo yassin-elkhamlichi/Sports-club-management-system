@@ -5,6 +5,7 @@
 *.log
 .idea
 sport_club_projet/idea/
+sport_club_projet/.env
 # BlueJ files
 *.ctxt
 
