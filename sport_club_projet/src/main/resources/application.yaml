@@ -1,9 +1,20 @@
 spring:
-  application: name=sport_club_projet
+  application:
+    name: sport_club_projet
 
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/sportClub&CreateDatabaseIfNotExist=true
-    username: ${USERNAME}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sportClub?createDatabaseIfNotExist=true
+    username: ${USER}
     password: ${PASSWORD}
 
+  jpa:
+    properties:
+      hibernate.physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+
+  sql:
+    show-queries: true
+
+  flyway:
+    enabled: true
