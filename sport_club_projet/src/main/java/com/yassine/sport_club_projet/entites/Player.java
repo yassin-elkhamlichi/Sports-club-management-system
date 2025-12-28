@@ -42,12 +42,6 @@ public class Player {
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "teamId")
     private Team team;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "memberId")
-    private Member member;
-
     @OneToMany(mappedBy = "player")
     private Set<Attendance> attendances = new LinkedHashSet<>();
 

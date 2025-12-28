@@ -9,12 +9,11 @@ spring:
     password: ${PASSWORD}
 
   jpa:
-    properties:
-      hibernate.physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
-
-  sql:
-    show-queries: true
 
   flyway:
     enabled: true

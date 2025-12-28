@@ -21,8 +21,7 @@ public class Member {
     private Long id;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToOne(fetch = FetchType.LAZY, optional = false , cascade = CascadeType.ALL)
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
@@ -37,8 +36,6 @@ public class Member {
     @Column(name = "isActive")
     private Boolean isActive;
 
-    @OneToMany(mappedBy = "member")
-    private Set<Player> players = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "member")
     private Set<Subscription> subscriptions = new LinkedHashSet<>();
