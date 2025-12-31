@@ -3,6 +3,7 @@ package com.yassine.sport_club_projet.entites;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -38,6 +39,7 @@ public class Member {
 
 
     @OneToMany(mappedBy = "member")
+    @ToString.Exclude
     private Set<Subscription> subscriptions = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "member")

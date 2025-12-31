@@ -3,6 +3,7 @@ package com.yassine.sport_club_projet.entites;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -32,6 +33,7 @@ public class Subscription {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "memberId")
+    @ToString.Exclude
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)

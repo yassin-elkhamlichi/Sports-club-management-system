@@ -16,8 +16,7 @@ import java.util.Set;
 @Table(name = "Player")
 public class Player {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "userId", nullable = false)
     private Long id;
 
     @Column(name = "jerseyNumber")
@@ -38,12 +37,19 @@ public class Player {
     @Column(name = "weight")
     private Double weight;
 
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "userId", nullable = true)
+    private User user;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "teamId")
     private Team team;
+
     @OneToMany(mappedBy = "player")
     private Set<Attendance> attendances = new LinkedHashSet<>();
-
 
 }

@@ -29,7 +29,7 @@ public class MemberResponseDto {
 
     private Boolean isActive;
 
-    private Set<Subscription> subscriptions = new LinkedHashSet<>();
+    private Set<SubscriptionDto> subscriptions = new LinkedHashSet<>();
 
-    private Set<Ticket> tickets = new LinkedHashSet<>();
+    private Set<TicketDto> ticketsId = new LinkedHashSet<>();
 }
