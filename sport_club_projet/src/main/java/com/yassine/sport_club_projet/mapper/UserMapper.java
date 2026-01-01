@@ -1,8 +1,6 @@
 package com.yassine.sport_club_projet.mapper;
 
-import com.yassine.sport_club_projet.dto.UpdatePlayerRequestDto;
-import com.yassine.sport_club_projet.dto.UpdateUserPlayerRequestDto;
-import com.yassine.sport_club_projet.dto.UpdateUserRequestDto;
+import com.yassine.sport_club_projet.dto.*;
 import com.yassine.sport_club_projet.entites.User;
 import org.mapstruct.*;
 
@@ -12,4 +10,7 @@ public interface UserMapper {
 
     UpdateUserRequestDto toDto(UpdateUserPlayerRequestDto updateUserPlayerRequestDto);
 
+    User toEntity(UserCoachRequestDto userCoachRequestDto);
+
+    UpdateUserRequestDto toDto(UpdateUserCoachRequestDto updateUserCoachRequestDto);
 }
