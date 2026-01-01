@@ -3,10 +3,13 @@ package com.yassine.sport_club_projet.services;
 
 import com.yassine.sport_club_projet.dto.*;
 import com.yassine.sport_club_projet.entites.Player;
+import com.yassine.sport_club_projet.entites.Team;
 import com.yassine.sport_club_projet.entites.User;
 import com.yassine.sport_club_projet.exceptions.PlayerNotFoundException;
+import com.yassine.sport_club_projet.exceptions.TeamNotFoundException;
 import com.yassine.sport_club_projet.exceptions.UserAlreadyExistException;
 import com.yassine.sport_club_projet.mapper.PlayerMapper;
+import com.yassine.sport_club_projet.mapper.TeamMapper;
 import com.yassine.sport_club_projet.mapper.UserMapper;
 import com.yassine.sport_club_projet.repository.PlayerRepository;
 import com.yassine.sport_club_projet.repository.TeamRepository;
@@ -14,6 +17,7 @@ import com.yassine.sport_club_projet.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -25,6 +29,7 @@ public class PlayerService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private TeamRepository teamRepository;
+    private TeamMapper teamMapper;
 
     public List<PlayerResponseDto> GetAllPlayers() {
         return  playerRepository.findAll().stream()
@@ -75,5 +80,22 @@ public class PlayerService {
         if(player == null)
             throw new PlayerNotFoundException();
         playerRepository.deleteById(id);
+    }
+
+    public Team assignPlayerToTeam(
+            Long TeamId,
+            Long PlayerId
+    ) throws PlayerNotFoundException, TeamNotFoundException {
+        var player = playerRepository.findById(PlayerId).orElse(null);
+        if( player == null ){
+            throw new PlayerNotFoundException();
+        }
+        var team = teamRepository.findById(TeamId).orElse(null);
+        if( team == null)
+            throw new TeamNotFoundException();
+        player.setTeam(team);
+        team.getPlayers().add(player);
+        playerRepository.save(player);
+        return team;
     }
 }

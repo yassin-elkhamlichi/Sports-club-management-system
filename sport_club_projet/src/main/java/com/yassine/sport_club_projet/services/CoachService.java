@@ -1,11 +1,15 @@
 package com.yassine.sport_club_projet.services;
 
 import com.yassine.sport_club_projet.dto.*;
-import com.yassine.sport_club_projet.exceptions.CoachNotFoundException;
+import com.yassine.sport_club_projet.entites.Team;
+import com.yassine.sport_club_projet.exceptions.*;
 import com.yassine.sport_club_projet.mapper.CoachMapper;
 import com.yassine.sport_club_projet.mapper.UserMapper;
 import com.yassine.sport_club_projet.repository.CoachRepository;
+import com.yassine.sport_club_projet.repository.PlayerRepository;
+import com.yassine.sport_club_projet.repository.TeamRepository;
 import lombok.AllArgsConstructor;
+import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +19,10 @@ import java.util.List;
 public class CoachService {
     public final CoachRepository coachRepository;
     private final CoachMapper coachMapper;
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
+    private final TeamService teamService;
+    private TeamRepository teamRepository;
+    private PlayerRepository playerRepository;
 
     public List<CoachResponseDto> GetAllCoachs() {
                 return coachRepository.findAllWithTeamsAndPlayers().stream().map(coachMapper::toDto).toList();
@@ -57,5 +64,40 @@ public class CoachService {
             throw new CoachNotFoundException();
         }
         coachRepository.deleteById(id);
+    }
+
+    public CoachResponseDto assignPlayerToTeam(Long coachId, Long teamId, Long playerId) throws CoachNotFoundException, PlayerNotFoundException, TeamNotFoundException {
+            var coach = coachRepository.findCoachByIdWithTeamsAndPlayers(coachId).orElse(null);
+            if(coach == null)
+                throw new CoachNotFoundException();
+            Team team1 = teamRepository.findById(teamId).orElse(null);
+            if(team1 == null)
+               throw new TeamNotFoundException();
+            if(!coach.findTeam(team1.getId()))
+                throw new CoachNotManageThisTeamException();
+            Team team = teamService.playerToTeam(playerId , teamId);
+            team.setCoach(coach);
+            coach.getTeams().add(team);
+            teamRepository.save(team);
+            return coachMapper.toDto(coach);
+
+    }
+
+    public CoachResponseDto assignTeamToCoach(Long coachId, Long teamId) throws CoachNotFoundException, TeamNotFoundException, TeamAlreadyExistException {
+        var coach = coachRepository.findCoachByIdWithTeamsAndPlayers(coachId).orElse(null);
+        if(coach == null)
+            throw new CoachNotFoundException();
+        Team team1 = teamRepository.findById(teamId).orElse(null);
+        if(team1 == null)
+            throw new TeamNotFoundException();
+        if(coach.findTeam(team1.getId()))
+            throw new TeamAlreadyExistException();
+
+        team1.setCoach(coach);
+        coach.getTeams().add(team1);
+
+        teamRepository.save(team1);
+
+        return coachMapper.toDto(coach);
     }
 }

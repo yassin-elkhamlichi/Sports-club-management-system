@@ -27,7 +27,7 @@ public class Team {
     @JoinColumn(name = "categoryId")
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY ,  cascade = CascadeType.PERSIST)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "coachId")
     private Coach coach;
@@ -35,7 +35,7 @@ public class Team {
     @OneToMany(mappedBy = "team")
     private Set<Match> matches = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team" )
     private Set<Player> players = new LinkedHashSet<>();
 
 

@@ -44,7 +44,7 @@ public class Player {
     private User user;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.PERSIST)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "teamId")
     private Team team;

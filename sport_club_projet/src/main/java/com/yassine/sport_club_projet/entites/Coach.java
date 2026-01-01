@@ -8,6 +8,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Getter
 @Setter
@@ -34,4 +35,15 @@ public class Coach {
     private Set<Team> teams = new LinkedHashSet<>();
 
 
+    public Boolean findTeam(Long id) {
+        AtomicReference<Boolean> a = new AtomicReference<>(false);
+        teams.forEach(
+                team -> {
+                    if (team.getId().equals(id)) {
+                        a.set(true);
+                    }
+                }
+        );
+        return a.get();
+    }
 }
