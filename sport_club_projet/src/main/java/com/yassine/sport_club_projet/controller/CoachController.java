@@ -53,15 +53,6 @@ public class CoachController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("{coachId}/team/{teamId}/player/{playerId}")
-    public ResponseEntity<CoachResponseDto> assignPToT(
-            @PathVariable Long coachId,
-            @PathVariable Long teamId,
-            @PathVariable Long playerId
-    ) throws CoachNotFoundException, PlayerNotFoundException, TeamNotFoundException {
-        var coachResponse = coachService.assignPlayerToTeam(coachId, teamId , playerId);
-        return ResponseEntity.ok(coachResponse);
-    }
 
 
     @PostMapping("/{coachId}/team/{teamId}")

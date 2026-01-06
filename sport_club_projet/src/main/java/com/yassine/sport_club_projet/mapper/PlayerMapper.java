@@ -14,7 +14,7 @@ public interface PlayerMapper {
     @Mapping(source = "teamId", target = "teamId")
     UpdatePlayerRequestDto toDto(UpdateUserPlayerRequestDto updateUserPlayerRequestDto);
 
-    @Mapping(target = "team.id" , source = "teamId")
+
     Player toEntity(UserPlayerRequestDto userPlayerRequestDto);
 
     @Mapping(target = "id", ignore = true)

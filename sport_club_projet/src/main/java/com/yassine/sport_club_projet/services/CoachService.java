@@ -66,22 +66,6 @@ public class CoachService {
         coachRepository.deleteById(id);
     }
 
-    public CoachResponseDto assignPlayerToTeam(Long coachId, Long teamId, Long playerId) throws CoachNotFoundException, PlayerNotFoundException, TeamNotFoundException {
-            var coach = coachRepository.findCoachByIdWithTeamsAndPlayers(coachId).orElse(null);
-            if(coach == null)
-                throw new CoachNotFoundException();
-            Team team1 = teamRepository.findById(teamId).orElse(null);
-            if(team1 == null)
-               throw new TeamNotFoundException();
-            if(!coach.findTeam(team1.getId()))
-                throw new CoachNotManageThisTeamException();
-            Team team = teamService.playerToTeam(playerId , teamId);
-            team.setCoach(coach);
-            coach.getTeams().add(team);
-            teamRepository.save(team);
-            return coachMapper.toDto(coach);
-
-    }
 
     public CoachResponseDto assignTeamToCoach(Long coachId, Long teamId) throws CoachNotFoundException, TeamNotFoundException, TeamAlreadyExistException {
         var coach = coachRepository.findCoachByIdWithTeamsAndPlayers(coachId).orElse(null);

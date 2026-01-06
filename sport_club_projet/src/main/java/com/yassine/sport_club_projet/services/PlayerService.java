@@ -14,6 +14,7 @@ import com.yassine.sport_club_projet.mapper.UserMapper;
 import com.yassine.sport_club_projet.repository.PlayerRepository;
 import com.yassine.sport_club_projet.repository.TeamRepository;
 import com.yassine.sport_club_projet.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,6 @@ public class PlayerService {
         user.addUser(userPlayerRequestDto.getEmail(), userPlayerRequestDto.getPassword(), userPlayerRequestDto.getFirstname(), userPlayerRequestDto.getLastname(), userPlayerRequestDto.getPhone(), "Player");
         Player player = playerMapper.toEntity(userPlayerRequestDto);
         player.setUser(user);
-        user.setRole("Player");
         playerRepository.save(player);
         return playerMapper.toDto(player);
     }
@@ -73,6 +73,7 @@ public class PlayerService {
         // Refresh player data
         player = playerRepository.findById(id).orElse(null);
         return playerMapper.toDto(player);
+
     }
 
     public void deletePlayer(Long id) throws PlayerNotFoundException {
@@ -82,14 +83,15 @@ public class PlayerService {
         playerRepository.deleteById(id);
     }
 
+    @Transactional
     public Team assignPlayerToTeam(
             Long TeamId,
             Long PlayerId
     ) throws PlayerNotFoundException, TeamNotFoundException {
-        var player = playerRepository.findById(PlayerId).orElse(null);
-        if( player == null ){
+        Player player = playerRepository.findById(PlayerId).orElse(null);
+        if(player == null)
             throw new PlayerNotFoundException();
-        }
+        System.out.println(player.getId());
         var team = teamRepository.findById(TeamId).orElse(null);
         if( team == null)
             throw new TeamNotFoundException();

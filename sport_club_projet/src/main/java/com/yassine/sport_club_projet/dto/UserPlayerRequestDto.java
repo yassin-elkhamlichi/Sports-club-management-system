@@ -6,7 +6,6 @@ import java.time.LocalDate;
 
 @Data
 public class UserPlayerRequestDto {
-
     private String email;
     private String password;
     private String firstname;
@@ -18,5 +17,4 @@ public class UserPlayerRequestDto {
     private String medicalCertificate;
     private Double height;
     private Double weight;
-    private Long teamId;
 }
