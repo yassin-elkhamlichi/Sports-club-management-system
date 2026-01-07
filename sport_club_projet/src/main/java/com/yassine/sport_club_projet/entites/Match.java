@@ -58,5 +58,8 @@ public class Match {
     public Boolean isExpired() {
         return LocalDateTime.now().isAfter(dateTime);
     }
+    public Integer remainingTicket(){
+        return facility.getCapacity() - tickets.size();
 
+    }
 }

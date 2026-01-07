@@ -50,17 +50,6 @@ public class MemberController {
         return ResponseEntity.noContent().build();
     }
 
-    @ExceptionHandler(MemberNotFoundException.class)
-    public ResponseEntity<?> handleMemberException(){
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new errorMessageDto("Member not found"));
-    }
-    @ExceptionHandler(UserAlreadyExistException.class)
-    public ResponseEntity<?> handleUserExistException(){
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new errorMessageDto("User already exist"));
-    }
+
 
 }

@@ -48,7 +48,7 @@ public class SubscriptionController {
         return ResponseEntity.ok(renewed);
     }
 
-    @PostMapping("/{idSubs}/changePlan")
+    @PostMapping("/{idSubs}/changePlan?")
     public ResponseEntity<SubscriptionDto> changeSubscriptionPlan(@PathVariable Long idSubs, @RequestParam Long planId) throws SubscriptionNotFound, SubscriptionPlanNotFound {
         SubscriptionDto renewed = subscriptionService.ChangeSubscriptionPlan(idSubs, planId);
         return ResponseEntity.ok(renewed);
@@ -66,18 +66,5 @@ public class SubscriptionController {
         return ResponseEntity.noContent().build();
     }
 
-    @ExceptionHandler(SubscriptionNotFound.class)
-    public ResponseEntity<String> handleSubscriptionNotFound(SubscriptionNotFound ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Subscription not found");
-    }
 
-    @ExceptionHandler(SubscriptionStillActiveException.class)
-    public ResponseEntity<String> handleSubscriptionStillActive(SubscriptionStillActiveException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("Subscription is still active");
-    }
-
-    @ExceptionHandler(SubscriptionPlanNotFound.class)
-    public ResponseEntity<String> handleSubscriptionPlanNotFound(SubscriptionPlanNotFound ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Subscription plan not found");
-    }
 }

@@ -64,28 +64,5 @@ public class CoachController {
         return ResponseEntity.ok(coachResponse);
     }
 
-    @ExceptionHandler(CoachNotFoundException.class)
-    public ResponseEntity<?> handleCoachException(){
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new errorMessageDto("Coach not found"));
-    }
-    @ExceptionHandler(UserAlreadyExistException.class)
-    public ResponseEntity<?> handleUserExistException(){
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new errorMessageDto("User already exist"));
-    }
-    @ExceptionHandler(TeamNotFoundException.class)
-    public ResponseEntity<?> handleTeamNotFoundException(){
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new errorMessageDto("Team not found"));
-    }
-    @ExceptionHandler(CoachNotManageThisTeamException.class)
-    public ResponseEntity<?> handleCTNotFoundException(){
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new errorMessageDto("this coach not responsable for this team"));
-    }
+
 }

@@ -68,53 +68,6 @@ public class TicketController {
     }
 
 
-    @ExceptionHandler(TicketNotFoundException.class)
-    public ResponseEntity<?> handleTicketNotFoundException() {
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(new errorMessageDto("Ticket not found"));
-    }
 
-    @ExceptionHandler(MemberNotFoundException.class)
-    public ResponseEntity<?> handleMemberNotFoundException() {
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(new errorMessageDto("Member not found"));
-    }
-
-    @ExceptionHandler(MatchNotFoundException.class)
-    public ResponseEntity<?> handleMatchNotFoundException() {
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(new errorMessageDto("Match not found"));
-    }
-
-    @ExceptionHandler(TicketAlreadyExistException.class)
-    public ResponseEntity<?> handleTicketAlreadyExistException() {
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(new errorMessageDto("Ticket already exists"));
-    }
-
-    @ExceptionHandler(MatchGoneException.class)
-    public ResponseEntity<?> handleMatchGoneException() {
-        return ResponseEntity
-                .status(HttpStatus.GONE)
-                .body(new errorMessageDto("Match is gone"));
-    }
-
-    @ExceptionHandler(FacilityNotFoundException.class)
-    public ResponseEntity<?> handleFacilityNotFoundException() {
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(new errorMessageDto("Facility not found"));
-    }
-
-    @ExceptionHandler(AllTicketPurchasesException.class)
-    public ResponseEntity<?> handleAllTicketPurchasesException() {
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(new errorMessageDto("All tickets for this match have been purchased"));
-    }
 
 }

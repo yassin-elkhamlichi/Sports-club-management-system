@@ -26,16 +26,5 @@ public class TeamController {
         return ResponseEntity.ok(teamMapper.toDto(teamResponse));
     }
 
-    @ExceptionHandler(PlayerNotFoundException.class)
-    public ResponseEntity<String> handlePlayerNotFoundException(){
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body("Player not found");
-    }
-    @ExceptionHandler(TeamNotFoundException.class)
-    public ResponseEntity<?> handleTeamNotFoundException(){
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new errorMessageDto("Team not found"));
-    }
+
 }

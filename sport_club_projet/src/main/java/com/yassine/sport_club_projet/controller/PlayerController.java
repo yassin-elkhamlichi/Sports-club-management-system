@@ -50,16 +50,6 @@ public class PlayerController {
         return ResponseEntity.noContent().build();
     }
 
-    @ExceptionHandler(PlayerNotFoundException.class)
-    public ResponseEntity<?> handlePlayerException(){
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new errorMessageDto("Player not found"));
-    }
-    @ExceptionHandler(UserAlreadyExistException.class)
-    public ResponseEntity<?> handleUserExistException(){
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new errorMessageDto("User already exist"));
-    }
+
+
 }
