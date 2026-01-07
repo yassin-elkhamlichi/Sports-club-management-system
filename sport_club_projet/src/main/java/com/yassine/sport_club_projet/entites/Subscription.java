@@ -44,5 +44,8 @@ public class Subscription {
     @OneToMany(mappedBy = "subscription")
     private Set<Payment> payments = new LinkedHashSet<>();
 
+    public Boolean isExpired(){
+        return LocalDate.now().isAfter(endDate);
+    }
 
 }

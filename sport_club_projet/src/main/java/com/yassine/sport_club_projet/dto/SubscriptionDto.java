@@ -16,4 +16,6 @@ public class SubscriptionDto {
 
     private String status;
 
+    private Long planId;
+
 }
