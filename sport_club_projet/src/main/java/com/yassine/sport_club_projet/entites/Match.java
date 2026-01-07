@@ -55,5 +55,8 @@ public class Match {
     @OneToMany(mappedBy = "match")
     private Set<Ticket> tickets = new LinkedHashSet<>();
 
+    public Boolean isExpired() {
+        return LocalDateTime.now().isAfter(dateTime);
+    }
 
 }
