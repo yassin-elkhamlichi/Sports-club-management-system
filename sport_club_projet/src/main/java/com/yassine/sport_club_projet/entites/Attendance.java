@@ -1,8 +1,7 @@
 package com.yassine.sport_club_projet.entites;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -12,7 +11,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
 @Table(name = "Attendance")
+@NoArgsConstructor
 public class Attendance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

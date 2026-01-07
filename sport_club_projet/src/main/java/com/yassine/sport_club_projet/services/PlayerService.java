@@ -11,9 +11,10 @@ import com.yassine.sport_club_projet.exceptions.UserAlreadyExistException;
 import com.yassine.sport_club_projet.mapper.PlayerMapper;
 import com.yassine.sport_club_projet.mapper.TeamMapper;
 import com.yassine.sport_club_projet.mapper.UserMapper;
-import com.yassine.sport_club_projet.repository.PlayerRepository;
-import com.yassine.sport_club_projet.repository.TeamRepository;
-import com.yassine.sport_club_projet.repository.UserRepository;
+
+import com.yassine.sport_club_projet.repositories.PlayerRepository;
+import com.yassine.sport_club_projet.repositories.TeamRepository;
+import com.yassine.sport_club_projet.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
@@ -29,8 +30,8 @@ public class PlayerService {
     private final PlayerMapper playerMapper;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private TeamRepository teamRepository;
-    private TeamMapper teamMapper;
+    private final TeamRepository teamRepository;
+    private final TeamMapper teamMapper;
 
     public List<PlayerResponseDto> GetAllPlayers() {
         return  playerRepository.findAll().stream()

@@ -5,13 +5,12 @@ import com.yassine.sport_club_projet.entites.Subscription;
 import com.yassine.sport_club_projet.exceptions.MemberNotFoundException;
 import com.yassine.sport_club_projet.exceptions.SubscriptionNotFound;
 import com.yassine.sport_club_projet.exceptions.SubscriptionPlanNotFound;
-import com.yassine.sport_club_projet.exceptions.SubscriptionStillActiveException;
 import com.yassine.sport_club_projet.mapper.SubscriptionMapper;
-import com.yassine.sport_club_projet.repository.MemberRepository;
-import com.yassine.sport_club_projet.repository.SubscriptionPlanRepository;
-import com.yassine.sport_club_projet.repository.SubscriptionRepository;
+
+import com.yassine.sport_club_projet.repositories.MemberRepository;
+import com.yassine.sport_club_projet.repositories.SubscriptionPlanRepository;
+import com.yassine.sport_club_projet.repositories.SubscriptionRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

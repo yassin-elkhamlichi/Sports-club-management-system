@@ -46,4 +46,7 @@ public class Coach {
         );
         return a.get();
     }
+    public Boolean findPlayer(Player player) {
+        return !getTeams().stream().filter(t -> t.getPlayers().contains(player)).toList().isEmpty();
+    }
 }

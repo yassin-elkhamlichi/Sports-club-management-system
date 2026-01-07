@@ -8,9 +8,9 @@ import com.yassine.sport_club_projet.exceptions.CoachNotFoundException;
 import com.yassine.sport_club_projet.exceptions.MatchNotFoundException;
 import com.yassine.sport_club_projet.exceptions.TeamNotFoundException;
 import com.yassine.sport_club_projet.mapper.MatchMapper;
-import com.yassine.sport_club_projet.repository.CoachRepository;
-import com.yassine.sport_club_projet.repository.MatchRepository;
-import com.yassine.sport_club_projet.repository.TeamRepository;
+import com.yassine.sport_club_projet.repositories.CoachRepository;
+import com.yassine.sport_club_projet.repositories.MatchRepository;
+import com.yassine.sport_club_projet.repositories.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
@@ -29,14 +29,12 @@ public class MatchService {
     private final MatchMapper matchMapper;
     private final CoachRepository coachRepository;
 
-    @Transactional(readOnly = true)
     public List<MatchDto> getAllMatches() {
         return matchRepository.findAllWithTeamsSortByDateTime().stream()
                 .map(matchMapper::toDto)
                 .toList();
     }
 
-    @Transactional(readOnly = true)
     public MatchDto getMatchById(Long id) {
         return matchRepository.findById(id)
                 .map(matchMapper::toDto)

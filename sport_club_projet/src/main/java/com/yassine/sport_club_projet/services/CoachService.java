@@ -5,11 +5,11 @@ import com.yassine.sport_club_projet.entites.Team;
 import com.yassine.sport_club_projet.exceptions.*;
 import com.yassine.sport_club_projet.mapper.CoachMapper;
 import com.yassine.sport_club_projet.mapper.UserMapper;
-import com.yassine.sport_club_projet.repository.CoachRepository;
-import com.yassine.sport_club_projet.repository.PlayerRepository;
-import com.yassine.sport_club_projet.repository.TeamRepository;
+
+import com.yassine.sport_club_projet.repositories.CoachRepository;
+import com.yassine.sport_club_projet.repositories.PlayerRepository;
+import com.yassine.sport_club_projet.repositories.TeamRepository;
 import lombok.AllArgsConstructor;
-import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +21,8 @@ public class CoachService {
     private final CoachMapper coachMapper;
     private final UserMapper userMapper;
     private final TeamService teamService;
-    private TeamRepository teamRepository;
-    private PlayerRepository playerRepository;
+    private final TeamRepository teamRepository;
+    private final PlayerRepository playerRepository;
 
     public List<CoachResponseDto> GetAllCoachs() {
                 return coachRepository.findAllWithTeamsAndPlayers().stream().map(coachMapper::toDto).toList();

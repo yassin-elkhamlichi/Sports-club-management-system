@@ -3,21 +3,18 @@ package com.yassine.sport_club_projet.services;
 import com.yassine.sport_club_projet.dto.TicketDto;
 import com.yassine.sport_club_projet.dto.TicketRequestDto;
 import com.yassine.sport_club_projet.dto.UpdateTicketRequestDto;
-import com.yassine.sport_club_projet.entites.Facility;
-import com.yassine.sport_club_projet.entites.Match;
 import com.yassine.sport_club_projet.entites.Ticket;
 import com.yassine.sport_club_projet.exceptions.*;
 import com.yassine.sport_club_projet.mapper.TicketMapper;
-import com.yassine.sport_club_projet.repository.FacilityRepository;
-import com.yassine.sport_club_projet.repository.MatchRepository;
-import com.yassine.sport_club_projet.repository.MemberRepository;
-import com.yassine.sport_club_projet.repository.TicketRepository;
+
+import com.yassine.sport_club_projet.repositories.FacilityRepository;
+import com.yassine.sport_club_projet.repositories.MatchRepository;
+import com.yassine.sport_club_projet.repositories.MemberRepository;
+import com.yassine.sport_club_projet.repositories.TicketRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor

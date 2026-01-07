@@ -7,8 +7,9 @@ import com.yassine.sport_club_projet.exceptions.MemberNotFoundException;
 import com.yassine.sport_club_projet.exceptions.UserAlreadyExistException;
 import com.yassine.sport_club_projet.mapper.MemberMapper;
 import com.yassine.sport_club_projet.mapper.UserMapper;
-import com.yassine.sport_club_projet.repository.MemberRepository;
-import com.yassine.sport_club_projet.repository.UserRepository;
+
+import com.yassine.sport_club_projet.repositories.MemberRepository;
+import com.yassine.sport_club_projet.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,8 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class MemberService {
-  public final MemberRepository memberRepository;
-  public final MemberMapper memberMapper;
+    public final MemberRepository memberRepository;
+    public final MemberMapper memberMapper;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 

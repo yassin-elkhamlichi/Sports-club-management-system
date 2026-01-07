@@ -102,5 +102,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body("All tickets for this match have been purchased");
     }
+ @ExceptionHandler(CoachNotResponseForThisPlayerException.class)
+    public ResponseEntity<?> handleCoachNotResponseForThisPlayerException() {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body("This player is not training with this coach");
+    }
 
 }
