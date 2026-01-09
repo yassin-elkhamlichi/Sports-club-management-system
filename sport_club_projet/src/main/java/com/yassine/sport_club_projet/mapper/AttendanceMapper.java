@@ -12,7 +12,4 @@ public interface AttendanceMapper {
     @Mapping(target = "playerName", source = "player.id")
     AttendanceDto toDto(Attendance attendance);
 
-
-    @Mapping( target = "id" , ignore = true)
-    void update(UpdateAttendanceRequestDto requestDto,@MappingTarget Attendance attendance);
 }
