@@ -31,7 +31,7 @@ public class SubscriptionPlan {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "plan")
+    @OneToMany(mappedBy = "plan"  , orphanRemoval = true)
     private Set<Subscription> subscriptions = new LinkedHashSet<>();
 
 

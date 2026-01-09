@@ -11,6 +11,7 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface SubscriptionMapper {
     @Mapping(target = "planId", source = "plan.id")
+    @Mapping(target = "memberId", source = "member.id")
     SubscriptionDto toDto(Subscription subscription);
     @Mapping(target = "plan", source = "planId", qualifiedByName = "IdToPlan")
     Subscription toEntity(SubscriptionDto dto);

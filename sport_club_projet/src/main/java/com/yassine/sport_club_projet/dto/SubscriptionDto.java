@@ -18,4 +18,6 @@ public class SubscriptionDto {
 
     private Long planId;
 
+    private Long memberId;
+
 }

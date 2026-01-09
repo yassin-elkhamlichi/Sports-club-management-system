@@ -1,6 +1,7 @@
 package com.yassine.sport_club_projet.controller;
 
 import com.yassine.sport_club_projet.dto.SubscriptionDto;
+import com.yassine.sport_club_projet.dto.SubscriptionReNowDto;
 import com.yassine.sport_club_projet.exceptions.MemberNotFoundException;
 import com.yassine.sport_club_projet.exceptions.SubscriptionNotFound;
 import com.yassine.sport_club_projet.exceptions.SubscriptionPlanNotFound;
@@ -43,12 +44,12 @@ public class SubscriptionController {
     }
 
     @PostMapping("/{id}/renew")
-    public ResponseEntity<SubscriptionDto> renewSubscription(@PathVariable Long id) throws SubscriptionNotFound {
-        SubscriptionDto renewed = subscriptionService.renewSubscription(id);
+    public ResponseEntity<SubscriptionDto> renewSubscription(@PathVariable Long id , @RequestBody SubscriptionReNowDto subscriptionReNowDto) throws SubscriptionNotFound {
+        SubscriptionDto renewed = subscriptionService.renewSubscription(id , subscriptionReNowDto);
         return ResponseEntity.ok(renewed);
     }
 
-    @PostMapping("/{idSubs}/changePlan?")
+    @PostMapping("/{idSubs}/changePlan")
     public ResponseEntity<SubscriptionDto> changeSubscriptionPlan(@PathVariable Long idSubs, @RequestParam Long planId) throws SubscriptionNotFound, SubscriptionPlanNotFound {
         SubscriptionDto renewed = subscriptionService.ChangeSubscriptionPlan(idSubs, planId);
         return ResponseEntity.ok(renewed);

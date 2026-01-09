@@ -1,6 +1,7 @@
 package com.yassine.sport_club_projet.services;
 
 import com.yassine.sport_club_projet.dto.SubscriptionDto;
+import com.yassine.sport_club_projet.dto.SubscriptionReNowDto;
 import com.yassine.sport_club_projet.entites.Subscription;
 import com.yassine.sport_club_projet.exceptions.MemberNotFoundException;
 import com.yassine.sport_club_projet.exceptions.SubscriptionNotFound;
@@ -59,12 +60,13 @@ public class SubscriptionService {
        subscriptionRepository.save(subs);
     }
 
-    public SubscriptionDto renewSubscription(Long id) throws SubscriptionNotFound {
+    public SubscriptionDto renewSubscription(Long id , SubscriptionReNowDto subscriptionReNowDto) throws SubscriptionNotFound {
         var subs = subscriptionRepository.findById(id).orElse(null);
         if(subs == null){
             throw new SubscriptionNotFound();
         }
-        subs.setEndDate(subs.getEndDate().plusMonths(1));
+        subs.setEndDate(subs.getEndDate().plusMonths(subscriptionReNowDto.getDurationMonths()));
+
         subscriptionRepository.save(subs);
         return subscriptionMapper.toDto(subs);
     }
