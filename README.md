@@ -1,6 +1,6 @@
 # Sports Club Management System (REST API)
 
-**One-liner:** A robust, production-ready RESTful API designed to manage the lifecycle of club members, coaches, and subscription plans with a focus on data integrity and scalable architecture.
+**Overview :**  A robust, production-ready RESTful API designed to manage the lifecycle of club members, coaches, and subscription plans with a focus on data integrity and scalable architecture.
 
 ---
 
