@@ -6,47 +6,37 @@
 
 ## 🚀 Features
 
-* 
-**Member Management:** Full CRUD operations for tracking member profiles and enrollments.
+* **Member Management:** Full CRUD operations for tracking member profiles and enrollments.
 
 
-* 
-**Coach & Plan Scheduling:** Manage coaching staff and various subscription tiers/plans.
+* **Coach & Plan Scheduling:** Manage coaching staff and various subscription tiers/plans.
 
 
-* 
-**Strict Data Validation:** Ensuring zero-fault data entry using Jakarta Validation.
+* **Strict Data Validation:** Ensuring zero-fault data entry using Jakarta Validation.
 
 
-* 
-**Centralized Error Handling:** Global exception management for consistent API responses.
+* **Centralized Error Handling:** Global exception management for consistent API responses.
 
 
 
 ## 🛠 Tech Stack
 
-* 
-**Backend:** Java 17, Spring Boot 3 
+* **Backend:** Java 17, Spring Boot 3 
 
 
-* 
-**Data Access:** Spring Data JPA, Hibernate 
+* **Data Access:** Spring Data JPA, Hibernate 
 
 
-* 
-**Database:** MySQL 
+* **Database:** MySQL 
 
 
-* 
-**Validation:** Jakarta Validation (Bean Validation) 
+* **Validation:** Jakarta Validation (Bean Validation) 
 
 
-* 
-**API Documentation:** OpenAPI / Swagger 
+* **API Documentation:** OpenAPI / Swagger 
 
 
-* 
-**Tools:** Postman, Maven 
+* **Tools:** Postman, Maven 
 
 
 
@@ -54,20 +44,16 @@
 
 To align with **Software Quality** standards, this project implements:
 
-* 
-**DTO Pattern:** Strictly separates the internal domain model from client-side views to ensure data encapsulation and security.
+* **DTO Pattern:** Strictly separates the internal domain model from client-side views to ensure data encapsulation and security.
 
 
-* 
-**Domain-Driven Design (DDD) Principles:** Modular package structure for better maintainability.
+* **Domain-Driven Design (DDD) Principles:** Modular package structure for better maintainability.
 
 
-* 
-**JPA Relationship Mapping:** Complex data modeling including One-to-Many and Many-to-Many relationships to track activity schedules.
+* **JPA Relationship Mapping:** Complex data modeling including One-to-Many and Many-to-Many relationships to track activity schedules.
 
 
-* 
-**AOP-based Exception Handling:** Utilizes `@ControllerAdvice` to decouple error handling from business logic.
+* **AOP-based Exception Handling:** Utilizes `@ControllerAdvice` to decouple error handling from business logic.
 
 
 
