@@ -15,12 +15,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/members")
 public class MemberController {
+
     public final MemberService memberService;
 
     @GetMapping()
     public ResponseEntity<List<MemberResponseDto>> GetAllMembers(){
         return ResponseEntity.ok(memberService.GetAllMembers());
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<MemberResponseDto> GetMember(
             @PathVariable Long id
@@ -34,6 +36,7 @@ public class MemberController {
             ) throws UserAlreadyExistException {
         return memberService.AddMember(userMemberRequestDto);
     }
+
     @PutMapping("{id}")
     public ResponseEntity<MemberResponseDto> updateMember(
             @PathVariable Long id,
@@ -42,6 +45,7 @@ public class MemberController {
         var member = memberService.updateMember(id, updateUserRequestDto);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(member);
     }
+
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteMember(
             @PathVariable Long id
