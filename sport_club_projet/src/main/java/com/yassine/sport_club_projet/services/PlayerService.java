@@ -1,6 +1,7 @@
 package com.yassine.sport_club_projet.services;
 
 
+import com.fasterxml.jackson.core.Base64Variant;
 import com.yassine.sport_club_projet.dto.*;
 import com.yassine.sport_club_projet.entites.Player;
 import com.yassine.sport_club_projet.entites.Team;
@@ -18,6 +19,7 @@ import com.yassine.sport_club_projet.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -31,7 +33,7 @@ public class PlayerService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final TeamRepository teamRepository;
-    private final TeamMapper teamMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public List<PlayerResponseDto> GetAllPlayers() {
         return  playerRepository.findAll().stream()
@@ -50,6 +52,8 @@ public class PlayerService {
         if(userRepository.findByEmail(userPlayerRequestDto.getEmail()).isPresent())
             throw new UserAlreadyExistException();
         User user = new User();
+        String password = passwordEncoder.encode(userPlayerRequestDto.getPassword());
+
         user.addUser(userPlayerRequestDto.getEmail(), userPlayerRequestDto.getPassword(), userPlayerRequestDto.getFirstname(), userPlayerRequestDto.getLastname(), userPlayerRequestDto.getPhone(), "Player");
         Player player = playerMapper.toEntity(userPlayerRequestDto);
         player.setUser(user);

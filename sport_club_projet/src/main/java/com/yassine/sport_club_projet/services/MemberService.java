@@ -12,6 +12,7 @@ import com.yassine.sport_club_projet.repositories.MemberRepository;
 import com.yassine.sport_club_projet.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,8 @@ public class MemberService {
     public final MemberMapper memberMapper;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+
 
 
     public List<MemberResponseDto> GetAllMembers(){
@@ -40,7 +43,8 @@ public class MemberService {
         if(userRepository.findByEmail(userMemberRequestDto.getEmail()).isPresent())
             throw new UserAlreadyExistException();
         User user = new User();
-        user.addUser(userMemberRequestDto.getEmail() , userMemberRequestDto.getPassword() , userMemberRequestDto.getFirstname() , userMemberRequestDto.getLastname() ,userMemberRequestDto.getPhone() , userMemberRequestDto.getRole());
+        String password = passwordEncoder.encode(userMemberRequestDto.getPassword());
+        user.addUser(userMemberRequestDto.getEmail() , password , userMemberRequestDto.getFirstname() , userMemberRequestDto.getLastname() ,userMemberRequestDto.getPhone() , userMemberRequestDto.getRole());
         var member = memberMapper.toEntity(userMemberRequestDto);
         member.setUser(user);
         user.setRole("Member");

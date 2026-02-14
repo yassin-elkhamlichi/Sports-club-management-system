@@ -4,15 +4,23 @@ import com.yassine.sport_club_projet.exceptions.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Keep YOUR exact messages below 👇
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<List<String>> handleValidationErrors(MethodArgumentNotValidException ex) {
+        List<String> errors = ex.getBindingResult().getFieldErrors()
+                .stream().map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage()).collect(Collectors.toList());
+        return ResponseEntity.badRequest().body(errors);
+    }
 
     @ExceptionHandler(CoachNotFoundException.class)
     public ResponseEntity<?> handleCoachException() {
@@ -31,7 +39,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleCTNotFoundException() {
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN) // More accurate than BAD_REQUEST
-                .body("this coach not responsable for this team");
+                .body("this coach not responsible for this team");
     }
 
     @ExceptionHandler(MemberNotFoundException.class)
@@ -102,7 +110,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body("All tickets for this match have been purchased");
     }
- @ExceptionHandler(CoachNotResponseForThisPlayerException.class)
+
+    @ExceptionHandler(CoachNotResponseForThisPlayerException.class)
     public ResponseEntity<?> handleCoachNotResponseForThisPlayerException() {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body("This player is not training with this coach");

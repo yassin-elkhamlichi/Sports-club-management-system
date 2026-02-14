@@ -1,5 +1,6 @@
 package com.yassine.sport_club_projet.services;
 
+import com.fasterxml.jackson.core.Base64Variant;
 import com.yassine.sport_club_projet.dto.*;
 import com.yassine.sport_club_projet.entites.Team;
 import com.yassine.sport_club_projet.exceptions.*;
@@ -10,6 +11,7 @@ import com.yassine.sport_club_projet.repositories.CoachRepository;
 import com.yassine.sport_club_projet.repositories.PlayerRepository;
 import com.yassine.sport_club_projet.repositories.TeamRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +25,7 @@ public class CoachService {
     private final TeamService teamService;
     private final TeamRepository teamRepository;
     private final PlayerRepository playerRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<CoachResponseDto> GetAllCoachs() {
                 return coachRepository.findAllWithTeamsAndPlayers().stream().map(coachMapper::toDto).toList();
@@ -39,6 +42,8 @@ public class CoachService {
     public CoachResponseDto AddCoach(UserCoachRequestDto userCoachRequestDto) {
         var coach = coachMapper.toEntity(userCoachRequestDto);
         var user = userMapper.toEntity(userCoachRequestDto);
+        String password = passwordEncoder.encode(userCoachRequestDto.getPassword());
+        user.setPassword(password);
         user.setRole("Coach");
         coach.setUser(user);
         coachRepository.save(coach);

@@ -1,8 +1,11 @@
 package com.yassine.sport_club_projet.security;
 
+import com.yassine.sport_club_projet.filter.ValidationFilter;
+import jakarta.servlet.Filter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -14,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
@@ -21,6 +25,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @AllArgsConstructor
 public class SecurityConfig {
 
+
+    private final ValidationFilter validationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -41,13 +47,15 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests( auth -> auth
-                                .requestMatchers("/coach/**").permitAll()
-                                .requestMatchers("/members/**").permitAll()
-                                .requestMatchers("/user/login").permitAll()
-                                .requestMatchers("/errors").permitAll()
-                                .anyRequest().authenticated()
-                        );
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/coach/**").permitAll()
+                        .requestMatchers("/members/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
+                        .requestMatchers("/errors").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(validationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
