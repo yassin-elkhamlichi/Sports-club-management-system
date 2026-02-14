@@ -1,5 +1,6 @@
 package com.yassine.sport_club_projet.services;
 
+import com.yassine.sport_club_projet.entites.User;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -15,9 +16,11 @@ import java.util.Date;
 @Service
 public class JwtService {
     @Value("${app.jwt.expiration}")
-    private long tokenExpirationTime;
+    private long tokenAccessExpirationTime;
     @Value("${app.jwt.secret}")
     private String secretKey;
+    @Value("${app.jwt.tokenRefreshExpirationTime}")
+    private long tokenRefreshExpirationTime;
 
     private SecretKey signingKey;
 
@@ -27,10 +30,21 @@ public class JwtService {
         this.signingKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(String email, HttpServletRequest request) {
+    public String generateAccessToken(User user, HttpServletRequest request) {
+        return generateToken(user,tokenAccessExpirationTime, request);
+
+    }
+
+    public String generateRefreshToken(User user, HttpServletRequest request) {
+        return generateToken(user,tokenRefreshExpirationTime ,request);
+
+    }
+
+    public String generateToken(User user , long tokenExpirationTime, HttpServletRequest request) {
         return Jwts.builder()
-                .subject(email)
+                .subject(user.getEmail())
                 .claim("user_ip", request.getRemoteAddr())
+                .claim("Role", user.getRole())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * tokenExpirationTime))
                 .signWith(signingKey)

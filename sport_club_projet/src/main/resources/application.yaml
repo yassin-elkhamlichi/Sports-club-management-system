@@ -23,4 +23,5 @@ spring:
 app:
   jwt:
     secret: ${JWT_SECRET}
-    expiration: ${JWT_EXPIRATION}
+    expiration: ${JWT_ACCESS_EXPIRATION}
+    tokenRefreshExpirationTime: ${JWT_REFRESH_EXPIRATION}

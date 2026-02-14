@@ -4,6 +4,7 @@ package com.yassine.sport_club_projet.services;
 import com.fasterxml.jackson.core.Base64Variant;
 import com.yassine.sport_club_projet.dto.*;
 import com.yassine.sport_club_projet.entites.Player;
+import com.yassine.sport_club_projet.entites.Role;
 import com.yassine.sport_club_projet.entites.Team;
 import com.yassine.sport_club_projet.entites.User;
 import com.yassine.sport_club_projet.exceptions.PlayerNotFoundException;
@@ -54,7 +55,7 @@ public class PlayerService {
         User user = new User();
         String password = passwordEncoder.encode(userPlayerRequestDto.getPassword());
 
-        user.addUser(userPlayerRequestDto.getEmail(), userPlayerRequestDto.getPassword(), userPlayerRequestDto.getFirstname(), userPlayerRequestDto.getLastname(), userPlayerRequestDto.getPhone(), "Player");
+        user.addUser(userPlayerRequestDto.getEmail(), password, userPlayerRequestDto.getFirstname(), userPlayerRequestDto.getLastname(), userPlayerRequestDto.getPhone(), Role.PLAYER);
         Player player = playerMapper.toEntity(userPlayerRequestDto);
         player.setUser(user);
         playerRepository.save(player);

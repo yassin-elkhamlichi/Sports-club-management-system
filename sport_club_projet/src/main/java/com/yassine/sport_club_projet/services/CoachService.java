@@ -2,6 +2,7 @@ package com.yassine.sport_club_projet.services;
 
 import com.fasterxml.jackson.core.Base64Variant;
 import com.yassine.sport_club_projet.dto.*;
+import com.yassine.sport_club_projet.entites.Role;
 import com.yassine.sport_club_projet.entites.Team;
 import com.yassine.sport_club_projet.exceptions.*;
 import com.yassine.sport_club_projet.mapper.CoachMapper;
@@ -44,7 +45,7 @@ public class CoachService {
         var user = userMapper.toEntity(userCoachRequestDto);
         String password = passwordEncoder.encode(userCoachRequestDto.getPassword());
         user.setPassword(password);
-        user.setRole("Coach");
+        user.setRole(Role.COACH);
         coach.setUser(user);
         coachRepository.save(coach);
         return coachMapper.toDto(coach);

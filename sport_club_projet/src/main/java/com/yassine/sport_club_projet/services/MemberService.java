@@ -2,6 +2,7 @@ package com.yassine.sport_club_projet.services;
 
 
 import com.yassine.sport_club_projet.dto.*;
+import com.yassine.sport_club_projet.entites.Role;
 import com.yassine.sport_club_projet.entites.User;
 import com.yassine.sport_club_projet.exceptions.MemberNotFoundException;
 import com.yassine.sport_club_projet.exceptions.UserAlreadyExistException;
@@ -10,7 +11,6 @@ import com.yassine.sport_club_projet.mapper.UserMapper;
 
 import com.yassine.sport_club_projet.repositories.MemberRepository;
 import com.yassine.sport_club_projet.repositories.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,10 +44,9 @@ public class MemberService {
             throw new UserAlreadyExistException();
         User user = new User();
         String password = passwordEncoder.encode(userMemberRequestDto.getPassword());
-        user.addUser(userMemberRequestDto.getEmail() , password , userMemberRequestDto.getFirstname() , userMemberRequestDto.getLastname() ,userMemberRequestDto.getPhone() , userMemberRequestDto.getRole());
+        user.addUser(userMemberRequestDto.getEmail() , password , userMemberRequestDto.getFirstname() , userMemberRequestDto.getLastname() ,userMemberRequestDto.getPhone() , Role.MEMBER);
         var member = memberMapper.toEntity(userMemberRequestDto);
         member.setUser(user);
-        user.setRole("Member");
         memberRepository.save(member);
         return memberMapper.toDto(member);
   }

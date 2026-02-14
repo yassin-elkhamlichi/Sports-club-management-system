@@ -30,7 +30,8 @@ public class User {
     private String phone;
 
     @Column(name = "role", nullable = false, length = 50)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToOne(mappedBy = "user")
     private Admin admin;
@@ -41,7 +42,7 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Member member;
 
-    public User addUser(String email , String password , String firstname , String lastname , String phone , String role){
+    public User addUser(String email , String password , String firstname , String lastname , String phone , Role role){
         this.email = email;
         this.password = password;
         this.firstname = firstname;
