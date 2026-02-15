@@ -1,5 +1,6 @@
 package com.yassine.sport_club_projet.filter;
 
+import com.yassine.sport_club_projet.entites.Role;
 import com.yassine.sport_club_projet.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -8,12 +9,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -41,11 +44,13 @@ public class ValidationFilter extends OncePerRequestFilter {
             if (!ipInput.equals(ipRequest)){
                 throw new BadCredentialsException("Token stolen or IP changed!");
             }
+            Role role = jwtService.getRole(tokenWithoutBearer);
+            var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
 
             var authentication = new UsernamePasswordAuthenticationToken(
                     jwtService.getEmail(tokenWithoutBearer),
                     null,
-                    null
+                    authorities
             );
 
             authentication.setDetails(

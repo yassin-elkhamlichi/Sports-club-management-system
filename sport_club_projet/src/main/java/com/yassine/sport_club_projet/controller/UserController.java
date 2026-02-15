@@ -35,30 +35,35 @@ public class UserController {
     public ResponseEntity<JwtResponseDto> auth(
             @Valid @RequestBody AuthUserDto authUserDto , HttpServletRequest request
     ){
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        authUserDto.getEmail(),
-                        authUserDto.getPassword()
-                )
-        );
-        User user = userRepository.findByEmail(authUserDto.getEmail()).orElseThrow();
-        String tokenAccess = jwtService.generateAccessToken(user, request);
-        String tokenRefresh = jwtService.generateRefreshToken(user, request);
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            authUserDto.getEmail(),
+                            authUserDto.getPassword()
+                    )
+            );
 
-        // for save refresh token in cookie
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", tokenRefresh)
-                .httpOnly(true)
-                .secure(false)
-                .path("/")
-                .maxAge(7 * 24 * 60 * 60)
-                .sameSite("Lax")
-                .build();
+            User user = userRepository.findByEmail(authUserDto.getEmail()).orElseThrow();
+            String tokenAccess = jwtService.generateAccessToken(user, request);
+            String tokenRefresh = jwtService.generateRefreshToken(user, request);
 
-        // send refresh token in header
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(new JwtResponseDto(tokenAccess));
+            // for save refresh token in cookie
+            ResponseCookie cookie = ResponseCookie.from("refreshToken", tokenRefresh)
+                    .httpOnly(true)
+                    .secure(false)
+                    .path("/")
+                    .maxAge(7 * 24 * 60 * 60)
+                    .sameSite("Lax")
+                    .build();
 
+            // send refresh token in header
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                    .body(new JwtResponseDto(tokenAccess));
+        }
+        catch(Exception e){
+            throw new RuntimeException();
+        }
     }
 
     @PostMapping("refresh")

@@ -7,8 +7,10 @@ import com.yassine.sport_club_projet.services.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @AllArgsConstructor
@@ -26,7 +28,7 @@ public class MemberController {
     @GetMapping("/{id}")
     public ResponseEntity<MemberResponseDto> GetMember(
             @PathVariable Long id
-    ) throws MemberNotFoundException {
+    ) throws MemberNotFoundException, AccessDeniedException {
         return ResponseEntity.ok(memberService.GetMember(id));
     }
 
@@ -41,10 +43,11 @@ public class MemberController {
     public ResponseEntity<MemberResponseDto> updateMember(
             @PathVariable Long id,
             @RequestBody UpdateUserMemberRequestDto updateUserRequestDto
-    ) throws MemberNotFoundException {
+    ) throws MemberNotFoundException, AccessDeniedException {
         var member = memberService.updateMember(id, updateUserRequestDto);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(member);
     }
+
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteMember(

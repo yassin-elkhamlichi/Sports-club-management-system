@@ -1,6 +1,8 @@
 package com.yassine.sport_club_projet.services;
 
+import com.yassine.sport_club_projet.entites.Role;
 import com.yassine.sport_club_projet.entites.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class JwtService {
@@ -44,7 +47,7 @@ public class JwtService {
         return Jwts.builder()
                 .subject(user.getEmail())
                 .claim("user_ip", request.getRemoteAddr())
-                .claim("Role", user.getRole())
+                .claim("Role", user.getRole().name())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * tokenExpirationTime))
                 .signWith(signingKey)
@@ -79,5 +82,13 @@ public class JwtService {
                 .build()
                 .parseSignedClaims(tokenWithoutBearer)
                 .getPayload().get(userIp, String.class);
+    }
+
+    public Role getRole(String tokenWithoutBearer) {
+        return Role.valueOf(getPayload(tokenWithoutBearer).get("Role", String.class));
+    }
+
+    private Claims getPayload(String tokenWithoutBearer) {
+        return Jwts.parser().verifyWith(signingKey).build().parseSignedClaims(tokenWithoutBearer).getPayload();
     }
 }
