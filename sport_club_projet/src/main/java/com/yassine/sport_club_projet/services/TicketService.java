@@ -1,6 +1,6 @@
 package com.yassine.sport_club_projet.services;
 
-import com.yassine.sport_club_projet.dto.TicketDto;
+import com.yassine.sport_club_projet.dto.TicketResponseDto;
 import com.yassine.sport_club_projet.dto.TicketRequestDto;
 import com.yassine.sport_club_projet.dto.UpdateTicketRequestDto;
 import com.yassine.sport_club_projet.entites.Ticket;
@@ -23,26 +23,26 @@ public class TicketService {
     private final TicketMapper ticketMapper;
     private final MemberRepository memberRepository;
     private final MatchRepository matchRepository;
-    private final FacilityRepository faciltyRepository;
+    private final FacilityRepository facilityRepository;
 
-    public List<TicketDto> getAllTickets() {
+    public List<TicketResponseDto> getAllTickets() {
         return ticketRepository.findAll().stream().map(ticketMapper::toDto).toList();
     }
 
-    public TicketDto getTicket(Long id) throws TicketNotFoundException {
+    public TicketResponseDto getTicket(Long id) throws TicketNotFoundException {
         Ticket ticket = ticketRepository.findById(id).orElse(null);
         if(ticket == null) throw new TicketNotFoundException();
         return ticketMapper.toDto(ticket);
     }
 
 
-    public TicketDto addTicket(TicketRequestDto ticketRequestDto) {
+    public TicketResponseDto addTicket(TicketRequestDto ticketRequestDto) {
         var ticket = ticketMapper.toEntity(ticketRequestDto);
         ticketRepository.save(ticket);
         return ticketMapper.toDto(ticket);
     }
 
-    public TicketDto updateTicket(Long id, UpdateTicketRequestDto updateTicketRequestDto) throws TicketNotFoundException {
+    public TicketResponseDto updateTicket(Long id, UpdateTicketRequestDto updateTicketRequestDto) throws TicketNotFoundException {
         var ticket = ticketRepository.findById(id).orElse(null);
         if(ticket == null) throw new TicketNotFoundException();
         ticketMapper.update(updateTicketRequestDto , ticket);
@@ -56,21 +56,33 @@ public class TicketService {
         ticketRepository.delete(ticket);
     }
 
-    public TicketDto purchaseTicket(Long memberId, Long matchId, TicketDto ticketDto) throws TicketNotFoundException, MemberNotFoundException, MatchNotFoundException, TicketAlreadyExistException, MatchGoneException, FacilityNotFoundException, AllTicketPurchasesException {
+    public TicketResponseDto purchaseTicket(Long memberId, Long matchId) throws  MemberNotFoundException, MatchNotFoundException, TicketAlreadyExistException, MatchGoneException, FacilityNotFoundException, AllTicketPurchasesException {
+
         var member = memberRepository.findById(memberId).orElse(null);
         if(member == null) throw new MemberNotFoundException();
-        var match = matchRepository.findById(matchId).orElse(null);
+
+        var match = matchRepository.findByIdWithFacility(matchId).orElse(null);
         if(match == null) throw new MatchNotFoundException();
 
-        if (!ticketRepository.findByMatchIdAndMemberId(matchId, memberId).isEmpty())
-            throw new TicketAlreadyExistException();
-        if(!match.isExpired())
+
+        if(match.isExpired())
             throw new MatchGoneException();
-        var facility = faciltyRepository.findById(match.getFacility().getId()).orElse(null);
+
+        var facility = facilityRepository.findById(match.getFacility().getId()).orElse(null);
         if(facility == null) throw new FacilityNotFoundException();
-        if(facility.getCapacity() == match.getTickets().size() )
+
+        Integer capacity = facility.getCapacity();
+        if (capacity == null) {
+            throw new IllegalStateException("Facility capacity is not set for facility with id: " + facility.getId());
+        }
+
+        if(capacity <= match.getTickets().size() )
             throw new AllTicketPurchasesException();
-        var ticket = ticketMapper.toEntity(ticketDto);
+
+        Ticket ticket = new Ticket();
+
+
+        ticket.setPrice(match.getTicketPrice());
         ticket.setMatch(match);
         ticket.setMember(member);
         ticketRepository.save(ticket);

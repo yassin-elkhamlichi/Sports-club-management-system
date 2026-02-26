@@ -10,6 +10,7 @@ import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
@@ -23,13 +24,9 @@ public class CreateMatchRequestDto {
 
     private String opponentName;
 
-    private Integer scoreHome;
+    private BigDecimal ticketPrice;
 
-    private Integer scoreAway;
-
-    private String result;
-
-    private String  facilityName;
+    private Long  facilityId;
 
     private String teamName;
 

@@ -7,9 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public interface MatchRepository extends JpaRepository<Match, Long> {
     @EntityGraph(attributePaths = {"team" , "facility" , "tickets"})
     @Query("SELECT m FROM Match m  ORDER BY m.dateTime ASC")
     List<Match> findAllWithTeamsSortByDateTime();
+
+    @EntityGraph(attributePaths = {"facility"})
+    @Query("SELECT m FROM Match m WHERE m.id = ?1")
+    Optional<Match> findByIdWithFacility(Long matchId);
 }

@@ -1,21 +1,15 @@
 package com.yassine.sport_club_projet.dto;
 
+
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 
-@Data
+@Getter
 @AllArgsConstructor
 public class TicketRequestDto {
 
-    private String qrCode;
+    private Long id;
 
-    private BigDecimal price;
-
-    private Boolean isUsed;
-
-    private Long matchId;
-
-    private Long memberId;
 }

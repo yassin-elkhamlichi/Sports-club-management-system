@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
@@ -23,6 +24,9 @@ public class Match {
 
     @Column(name = "dateTime", nullable = false)
     private LocalDateTime dateTime;
+
+    @Column(name = "ticketPrice")
+    private BigDecimal ticketPrice;
 
     @Column(name = "opponentName", nullable = false, length = 100)
     private String opponentName;
@@ -59,6 +63,9 @@ public class Match {
         return LocalDateTime.now().isAfter(dateTime);
     }
     public Integer remainingTicket(){
+        if (facility == null || facility.getCapacity() == null) {
+            return 0;
+        }
         return facility.getCapacity() - tickets.size();
 
     }

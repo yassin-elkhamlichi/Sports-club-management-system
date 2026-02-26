@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.generator.EventType;
 
 import java.math.BigDecimal;
 
@@ -19,7 +21,8 @@ public class Ticket {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "qrCode", nullable = false)
+    @Column(name = "qrCode", nullable = false, insertable = false)
+    @Generated(event = {EventType.INSERT})
     private String qrCode;
 
     @Column(name = "price", nullable = false, precision = 10, scale = 2)

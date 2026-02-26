@@ -16,6 +16,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 
 @Component
@@ -37,8 +40,9 @@ public class ValidationFilter extends OncePerRequestFilter {
                 return;
             }
 
-            String ipInput = jwtService.extractClaim(tokenWithoutBearer , "user_ip");
-            String ipRequest = request.getRemoteAddr();
+            String ipInput = normalizeIp(jwtService.extractClaim(tokenWithoutBearer , "user_ip"));
+            String ipRequest = normalizeIp(request.getRemoteAddr());
+
             System.out.println("IP from token: " + ipInput);
             System.out.println("IP from request: " + ipRequest);
             if (!ipInput.equals(ipRequest)){
@@ -62,5 +66,28 @@ public class ValidationFilter extends OncePerRequestFilter {
             );
             filterChain.doFilter(request, response);
 
+    }
+
+    private String normalizeIp(String ip) {
+        try {
+            InetAddress addr = InetAddress.getByName(ip);
+            if (addr instanceof Inet6Address) {
+                byte[] bytes = addr.getAddress();
+                if (isIpv4Mapped(bytes)) {
+                    return InetAddress.getByAddress(
+                            new byte[]{bytes[12], bytes[13], bytes[14], bytes[15]}
+                    ).getHostAddress();
+                }
+            }
+            return addr.getHostAddress();
+        } catch (UnknownHostException e) {
+            return ip;
+        }
+    }
+
+    private boolean isIpv4Mapped(byte[] bytes) {
+        if (bytes.length != 16) return false;
+        for (int i = 0; i < 10; i++) if (bytes[i] != 0) return false;
+        return bytes[10] == (byte) 0xFF && bytes[11] == (byte) 0xFF;
     }
 }

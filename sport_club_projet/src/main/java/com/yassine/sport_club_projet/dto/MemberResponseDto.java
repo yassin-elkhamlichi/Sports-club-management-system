@@ -1,15 +1,7 @@
 package com.yassine.sport_club_projet.dto;
 
-import com.yassine.sport_club_projet.entites.Player;
-import com.yassine.sport_club_projet.entites.Subscription;
-import com.yassine.sport_club_projet.entites.Ticket;
-import com.yassine.sport_club_projet.entites.User;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
@@ -31,5 +23,5 @@ public class MemberResponseDto {
 
     private Set<SubscriptionDto> subscriptions = new LinkedHashSet<>();
 
-    private Set<TicketDto> ticketsId = new LinkedHashSet<>();
+    private Set<TicketResponseDto> ticketsId = new LinkedHashSet<>();
 }

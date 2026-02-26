@@ -1,10 +1,9 @@
 package com.yassine.sport_club_projet.controller;
 
-import com.yassine.sport_club_projet.dto.TicketDto;
 import com.yassine.sport_club_projet.dto.TicketRequestDto;
+import com.yassine.sport_club_projet.dto.TicketResponseDto;
 import com.yassine.sport_club_projet.dto.UpdateTicketRequestDto;
 import com.yassine.sport_club_projet.exceptions.*;
-import com.yassine.sport_club_projet.dto.errorMessageDto;
 import com.yassine.sport_club_projet.services.TicketService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,12 +20,12 @@ public class TicketController {
     public final TicketService ticketService;
 
     @GetMapping()
-    public ResponseEntity<List<TicketDto>> getAllTickets() {
+    public ResponseEntity<List<TicketResponseDto>> getAllTickets() {
         return ResponseEntity.ok(ticketService.getAllTickets());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TicketDto> getTicket(
+    public ResponseEntity<TicketResponseDto> getTicket(
             @PathVariable Long id
     ) throws TicketNotFoundException {
         return ResponseEntity.ok(ticketService.getTicket(id));
@@ -40,7 +39,7 @@ public class TicketController {
 //    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TicketDto> updateTicket(
+    public ResponseEntity<TicketResponseDto> updateTicket(
             @PathVariable Long id,
             @RequestBody UpdateTicketRequestDto updateTicketRequestDto
     ) throws TicketNotFoundException {
@@ -58,16 +57,13 @@ public class TicketController {
 
 
     @PostMapping("/purchase/member/{memberId}/match/{matchId}")
-    public ResponseEntity<TicketDto> purchaseTicket(
+    public ResponseEntity<TicketResponseDto> purchaseTicket(
             @PathVariable Long memberId,
-            @PathVariable Long matchId,
-            @RequestBody TicketDto ticketDto // May contain seat info, etc.
+            @PathVariable Long matchId
+
     ) throws MemberNotFoundException, MatchNotFoundException, TicketNotFoundException, TicketAlreadyExistException, MatchGoneException, FacilityNotFoundException, AllTicketPurchasesException {
-        var ticketResponse = ticketService.purchaseTicket(memberId, matchId, ticketDto);
+        TicketResponseDto ticketResponse = ticketService.purchaseTicket(memberId, matchId);
         return ResponseEntity.status(HttpStatus.CREATED).body(ticketResponse);
     }
-
-
-
 
 }

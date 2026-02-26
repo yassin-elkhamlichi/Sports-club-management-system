@@ -15,7 +15,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -49,19 +48,24 @@ public class SecurityConfig {
                         .requestMatchers("/user/login").permitAll()
                         .requestMatchers("/errors").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/members").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/subscriptionPlans").permitAll()
+
+
 
                         // Authenticated user endpoints
                         .requestMatchers(HttpMethod.GET, "/subscription/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/subscriptions/{id}/renew").authenticated()
                         .requestMatchers(HttpMethod.POST, "/subscriptions/{id}/stop").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/ticket/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/tickets/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/tickets/purchase/member/{id}/match/{matchId}").authenticated()
                         .requestMatchers(HttpMethod.GET, "/matches/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/user/refresh").authenticated()
 
                         // Subscription Admin endpoints
-                        .requestMatchers(HttpMethod.POST, "/subscriptions/{memberId}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/subscriptions/{memberId}").hasAnyRole("ADMIN", "MEMBER")
                         .requestMatchers(HttpMethod.PUT, "/subscriptions/{id}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/subscriptions/{idSubs}/changePlan").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/subscriptions/{idSubs}/changePlan").hasAnyRole("ADMIN", "MEMBER")
                         .requestMatchers(HttpMethod.DELETE, "/subscriptions/{id}").hasRole("ADMIN")
 
                         // Ticket Admin endpoints
@@ -77,7 +81,6 @@ public class SecurityConfig {
                         // Member endpoints
                         .requestMatchers(HttpMethod.GET, "/members/{id}").hasAnyRole("MEMBER", "ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/members/{id}").hasAnyRole("MEMBER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/members").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/members/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/members").hasRole("ADMIN")
 
@@ -100,28 +103,13 @@ public class SecurityConfig {
                         // Team endpoints
                         .requestMatchers(HttpMethod.POST, "/Team/{teamId}/player/{playerId}").hasAnyRole("COACH", "ADMIN")
 
+                        // Ticket endpoints
+                        .requestMatchers(HttpMethod.POST,"/tickets/purchase/member/{id}/match/{matchId}").hasAnyRole("MEMBER", "ADMIN")
 
                         .anyRequest().authenticated()
                 )
 
-                .addFilterBefore(validationFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(ex -> {
-                    ex.accessDeniedHandler((request, response, accessDeniedException) -> {
-                        response.setStatus(HttpStatus.FORBIDDEN.value());
-                        response.setContentType("application/json");
-                        response.getWriter().write(
-                                "{\"error\": \"Access Denied\", \"message\": \"You don't have permission to access this resource\"}"
-                        );
-                    });
-
-                    ex.authenticationEntryPoint((request, response, authException) -> {
-                        response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                        response.setContentType("application/json");
-                        response.getWriter().write(
-                                "{\"error\": \"Unauthorized\", \"message\": \"Authentication required\"}"
-                        );
-                    });
-                });
+                .addFilterBefore(validationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

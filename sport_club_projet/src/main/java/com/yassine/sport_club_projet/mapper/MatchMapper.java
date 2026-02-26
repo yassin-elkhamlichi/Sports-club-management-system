@@ -15,6 +15,7 @@ public interface MatchMapper {
     @Mapping( target = "teamName" , source = "team.name")
     MatchDto toDto(Match match);
 
+    @Mapping(target="facility.id", source="facilityId")
     @Mapping(target = "attendances", ignore = true)
     Match toEntity(CreateMatchRequestDto createMatchRequestDto);
 
