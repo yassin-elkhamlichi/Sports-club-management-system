@@ -21,6 +21,8 @@ sport_club_projet/.env
 *.zip
 *.tar.gz
 *.rar
+.env
+target
 
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml

@@ -25,3 +25,5 @@ app:
     secret: ${JWT_SECRET}
     expiration: ${JWT_ACCESS_EXPIRATION}
     tokenRefreshExpirationTime: ${JWT_REFRESH_EXPIRATION}
+
+
