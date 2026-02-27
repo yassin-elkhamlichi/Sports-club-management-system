@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3360/sportClub?createDatabaseIfNotExist=true
+    username: root
+    password: ${DB_PASSWORD}
+
+  webSiteUrlDev: "http://localhost:8080"
+
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    tokenAccessExpirationTime: ${JWT_ACCESS_EXPIRATION}
+    tokenRefreshExpirationTime: ${JWT_REFRESH_EXPIRATION}

@@ -1,0 +1,19 @@
+spring:
+  config:
+    import:
+      - "optional:configtree:/run/secrets/"
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${DB_USERNAME}
+    password: ${db_password}
+  webSiteUrlDev: "http://localhost:8090"
+
+
+app:
+  jwt:
+    secret: ${jwt_secret}
+    tokenAccessExpirationTime: ${JWT_ACCESS_EXPIRATION}
+    tokenRefreshExpirationTime: ${JWT_REFRESH_EXPIRATION}
+  
+

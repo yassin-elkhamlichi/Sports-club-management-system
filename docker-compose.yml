@@ -1,0 +1,60 @@
+services:
+  mysql:
+    container_name: sport-club-db
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    volumes:
+      - app-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: sportClub
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+    networks:
+      - sport-club-network
+    secrets:
+      - db_password
+      - db_root_password
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: on-failure
+  sport-club:
+    container_name: sport-club-app
+    build: .
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://sport-club-db:3306/sportClub?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      APP_JWT_TOKENACCESSEXPIRATIONTIME: ${JWT_ACCESS_EXPIRATION}
+      APP_JWT_TOKENREFRESHEXPIRATIONTIME: ${JWT_REFRESH_EXPIRATION}
+      SPRING_PROFILES_ACTIVE: prod
+    secrets:
+      - db_password
+      - jwt_secret
+    ports:
+      - "8090:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - sport-club-network
+    restart: on-failure
+
+secrets:
+  db_root_password:
+    file: ./secrets/db_root_password.txt
+  jwt_secret:
+    file: ./secrets/jwt_secret.txt
+  db_password:
+    file: secrets/db_password.txt
+
+volumes:
+  app-data:
+    name: app-data-volume
+
+networks:
+  sport-club-network:
+    driver: bridge
