@@ -8,6 +8,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@NoArgsConstructor
 public class JwtService {
     @Value("${app.jwt.tokenAccessExpirationTime}")
     private long tokenAccessExpirationTime;
@@ -31,19 +33,11 @@ public class JwtService {
     private SecretKey signingKey;
 
     @PostConstruct
-    public void init() throws IOException {
-        String secret = resolveSecret(secretKey);
-        byte[] keyBytes = Base64.getDecoder().decode(secret);
+    public void init() {
+        byte[] keyBytes = Base64.getDecoder().decode(secretKey);
         this.signingKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    private String resolveSecret(String value) throws IOException {
-        Path path = Path.of(value);
-        if (Files.exists(path)) {
-            return Files.readString(path).trim();
-        }
-        return value;
-    }
 
     public String generateAccessToken(User user, HttpServletRequest request) {
         return generateToken(user, tokenAccessExpirationTime, request);

@@ -1,8 +1,7 @@
 package com.yassine.sport_club_projet.entites;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
@@ -10,8 +9,11 @@ import java.util.Set;
 
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "Facility")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Facility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

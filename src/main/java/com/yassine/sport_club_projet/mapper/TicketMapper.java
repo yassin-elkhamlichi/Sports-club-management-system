@@ -1,15 +1,11 @@
 package com.yassine.sport_club_projet.mapper;
 
 import com.yassine.sport_club_projet.dto.TicketResponseDto;
-import com.yassine.sport_club_projet.dto.TicketRequestDto;
 import com.yassine.sport_club_projet.dto.UpdateTicketRequestDto;
-import com.yassine.sport_club_projet.entites.Match;
-import com.yassine.sport_club_projet.entites.Member;
 import com.yassine.sport_club_projet.entites.Ticket;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
 
 
 @Mapper(componentModel = "spring", uses = {MatchMapper.class})
@@ -30,5 +26,5 @@ public interface TicketMapper {
     void update(UpdateTicketRequestDto updateTicketRequestDto, @MappingTarget Ticket ticket);
 
 
-    Ticket toEntity(TicketRequestDto ticketRequestDto);
+    // Ticket toEntity(TicketRequestDto ticketRequestDto);
 }

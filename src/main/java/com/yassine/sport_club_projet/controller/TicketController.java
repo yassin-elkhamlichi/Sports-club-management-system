@@ -1,6 +1,5 @@
 package com.yassine.sport_club_projet.controller;
 
-import com.yassine.sport_club_projet.dto.TicketRequestDto;
 import com.yassine.sport_club_projet.dto.TicketResponseDto;
 import com.yassine.sport_club_projet.dto.UpdateTicketRequestDto;
 import com.yassine.sport_club_projet.exceptions.*;

@@ -1,7 +1,6 @@
 package com.yassine.sport_club_projet.services;
 
 import com.yassine.sport_club_projet.dto.TicketResponseDto;
-import com.yassine.sport_club_projet.dto.TicketRequestDto;
 import com.yassine.sport_club_projet.dto.UpdateTicketRequestDto;
 import com.yassine.sport_club_projet.entites.Ticket;
 import com.yassine.sport_club_projet.exceptions.*;
@@ -36,11 +35,11 @@ public class TicketService {
     }
 
 
-    public TicketResponseDto addTicket(TicketRequestDto ticketRequestDto) {
-        var ticket = ticketMapper.toEntity(ticketRequestDto);
-        ticketRepository.save(ticket);
-        return ticketMapper.toDto(ticket);
-    }
+//    public TicketResponseDto addTicket(TicketRequestDto ticketRequestDto) {
+//        var ticket = ticketMapper.toEntity(ticketRequestDto);
+//        ticketRepository.save(ticket);
+//        return ticketMapper.toDto(ticket);
+//    }
 
     public TicketResponseDto updateTicket(Long id, UpdateTicketRequestDto updateTicketRequestDto) throws TicketNotFoundException {
         var ticket = ticketRepository.findById(id).orElse(null);
@@ -62,7 +61,9 @@ public class TicketService {
         if(member == null) throw new MemberNotFoundException();
 
         var match = matchRepository.findByIdWithFacility(matchId).orElse(null);
-        if(match == null) throw new MatchNotFoundException();
+        if(match == null) {
+            throw new MatchNotFoundException();
+        }
 
 
         if(match.isExpired())
