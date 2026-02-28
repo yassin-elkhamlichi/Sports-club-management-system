@@ -7,7 +7,7 @@ spring:
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
-    generate-ddl: false   # Let Flyway handle schema
+    generate-ddl: false
     show-sql: true
     properties:
       hibernate:

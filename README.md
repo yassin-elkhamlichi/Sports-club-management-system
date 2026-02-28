@@ -68,7 +68,7 @@ This is the easiest way to get the system running, as it sets up both the MySQL 
     Populate `.env` with variables like `DB_USERNAME`, `JWT_ACCESS_EXPIRATION`, and `JWT_REFRESH_EXPIRATION`.
 3.  **Build and Start:**
     ```bash
-    docker-compose up -d --build
+    docker-compose up
     ```
     This will pull the MySQL image, build the Spring app image, execute Flyway migrations, and start the services.
 4.  **Stop:**
