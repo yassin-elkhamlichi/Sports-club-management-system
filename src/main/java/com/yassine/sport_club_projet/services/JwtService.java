@@ -38,7 +38,6 @@ public class JwtService {
         this.signingKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
-
     public String generateAccessToken(User user, HttpServletRequest request) {
         return generateToken(user, tokenAccessExpirationTime, request);
 

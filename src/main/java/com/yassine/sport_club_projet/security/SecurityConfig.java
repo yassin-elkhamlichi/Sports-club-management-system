@@ -31,41 +31,40 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration config
-    ) throws Exception {
+            AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
 
                         // Public endpoints
                         .requestMatchers("/user/login").permitAll()
                         .requestMatchers("/errors").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/v3/api-docs", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+                        .permitAll()
                         .requestMatchers(HttpMethod.POST, "/members").permitAll()
                         .requestMatchers(HttpMethod.GET, "/subscriptionPlans").permitAll()
-
-
 
                         // Authenticated user endpoints
                         .requestMatchers(HttpMethod.GET, "/subscription/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/subscriptions/{id}/renew").authenticated()
                         .requestMatchers(HttpMethod.POST, "/subscriptions/{id}/stop").authenticated()
                         .requestMatchers(HttpMethod.GET, "/tickets/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/tickets/purchase/member/{id}/match/{matchId}").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/tickets/purchase/member/{id}/match/{matchId}")
+                        .authenticated()
                         .requestMatchers(HttpMethod.GET, "/matches/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/user/refresh").authenticated()
 
                         // Subscription Admin endpoints
                         .requestMatchers(HttpMethod.POST, "/subscriptions/{memberId}").hasAnyRole("ADMIN", "MEMBER")
                         .requestMatchers(HttpMethod.PUT, "/subscriptions/{id}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/subscriptions/{idSubs}/changePlan").hasAnyRole("ADMIN", "MEMBER")
+                        .requestMatchers(HttpMethod.POST, "/subscriptions/{idSubs}/changePlan")
+                        .hasAnyRole("ADMIN", "MEMBER")
                         .requestMatchers(HttpMethod.DELETE, "/subscriptions/{id}").hasRole("ADMIN")
 
                         // Ticket Admin endpoints
@@ -84,7 +83,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/members/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/members").hasRole("ADMIN")
 
-
                         // Coach endpoints
                         .requestMatchers(HttpMethod.GET, "/coach/{id}").hasAnyRole("COACH", "ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/coach/{id}").hasAnyRole("COACH", "ADMIN")
@@ -101,13 +99,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/player").hasRole("ADMIN")
 
                         // Team endpoints
-                        .requestMatchers(HttpMethod.POST, "/Team/{teamId}/player/{playerId}").hasAnyRole("COACH", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/Team/{teamId}/player/{playerId}")
+                        .hasAnyRole("COACH", "ADMIN")
 
                         // Ticket endpoints
-                        .requestMatchers(HttpMethod.POST,"/tickets/purchase/member/{id}/match/{matchId}").hasAnyRole("MEMBER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/tickets/purchase/member/{id}/match/{matchId}")
+                        .hasAnyRole("MEMBER", "ADMIN")
 
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
 
                 .addFilterBefore(validationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
