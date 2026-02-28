@@ -26,5 +26,4 @@ public interface TicketMapper {
     void update(UpdateTicketRequestDto updateTicketRequestDto, @MappingTarget Ticket ticket);
 
 
-    // Ticket toEntity(TicketRequestDto ticketRequestDto);
 }

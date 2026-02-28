@@ -47,7 +47,7 @@ The system is designed following the standard Controller-Service-Repository patt
 3.  **Predictable Database State:** The use of `Flyway` guarantees that the database schema is identical across development, staging, and production environments, eliminating "it works on my machine" errors related to database structure.
 4.  **Maintainability:** `MapStruct` significantly reduces manual mapping errors and boilerplate. `Lombok` keeps entity and DTO classes incredibly clean.
 5.  **Robust Exception Handling:** A `@ControllerAdvice` (`GlobalExceptionHandler`) ensures that arbitrary Java exceptions are caught and translated into standardized JSON error responses with appropriate HTTP status codes.
-6.  **Containerized Environment:** The inclusion of `Dockerfile` and `docker-compose.yml` makes onboarding new developers and deploying to servers a one-command process (`docker-compose up`).
+6.  **Containerized Infrastructure & Security**: Leveraging Dockerfile and docker-compose.yml ensures environment parity and a seamless, one-command deployment process (docker-compose up). To align with production-grade security standards, I implemented Docker Secrets management to orchestrate and protect sensitive credentials (DB passwords, JWT keys), ensuring they are never exposed in plaintext environment variables or image layers
 
 ## 🚀 How to Run and Test
 
