@@ -1,9 +1,11 @@
 package com.yassine.sport_club_projet.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yassine.sport_club_projet.filter.ValidationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +16,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -34,8 +37,29 @@ public class SecurityConfig {
             AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+    @Bean
+    @Order(1)
+    public SecurityFilterChain oauthChain(HttpSecurity http) throws Exception {
+        http
+                .securityMatcher("/oauth2/**", "/login/oauth2/**")
+                .authorizeHttpRequests(a -> a.anyRequest().permitAll())
+                .oauth2Login(o -> o.successHandler(
+                        (req, res, auth) -> {
+                            OAuth2User user = (OAuth2User) auth.getPrincipal();
+                            res.setContentType("application/json");
+
+                            // FIX: Configure the ObjectMapper to handle Java 8 dates
+                            ObjectMapper mapper = new ObjectMapper();
+                            mapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
+                            mapper.disable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+                            res.getWriter().write(mapper.writeValueAsString(user.getAttributes()));
+                        }));
+        return http.build();
+    }
 
     @Bean
+    @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -45,14 +69,14 @@ public class SecurityConfig {
                         // Public endpoints
                         .requestMatchers("/user/login").permitAll()
                         .requestMatchers("/user/signup").permitAll()
-                        .requestMatchers("/errors").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers("/v3/api-docs", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/members").permitAll()
                         .requestMatchers(HttpMethod.GET, "/subscriptionPlans").permitAll()
 
                         // Authenticated user endpoints
-                        .requestMatchers(HttpMethod.GET, "/subscription/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/subscriptions/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/subscriptions/{id}/renew").authenticated()
                         .requestMatchers(HttpMethod.POST, "/subscriptions/{id}/stop").authenticated()
                         .requestMatchers(HttpMethod.GET, "/tickets/**").authenticated()
@@ -108,7 +132,6 @@ public class SecurityConfig {
                         .hasAnyRole("MEMBER", "ADMIN")
 
                         .anyRequest().authenticated())
-
                 .addFilterBefore(validationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
