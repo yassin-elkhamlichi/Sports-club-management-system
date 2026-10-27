@@ -3,12 +3,12 @@ services:
     container_name: sport-club-db
     image: mysql:8.0
     ports:
-      - "3307:3306"
+      - "3370:3306"
     volumes:
       - app-data:/var/lib/mysql
     environment:
       MYSQL_DATABASE: sportClub
-      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_USER: userDB
       MYSQL_PASSWORD_FILE: /run/secrets/db_password
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
     networks:
@@ -26,8 +26,8 @@ services:
     container_name: sport-club-app
     build: .
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=UTC&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3370/sportClub
+      SPRING_DATASOURCE_USERNAME: userDB
       APP_JWT_TOKENACCESSEXPIRATIONTIME: ${JWT_ACCESS_EXPIRATION}
       APP_JWT_TOKENREFRESHEXPIRATIONTIME: ${JWT_REFRESH_EXPIRATION}
       SPRING_PROFILES_ACTIVE: prod

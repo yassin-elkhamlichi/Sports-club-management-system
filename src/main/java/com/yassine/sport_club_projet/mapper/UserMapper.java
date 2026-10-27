@@ -13,4 +13,6 @@ public interface UserMapper {
     User toEntity(UserCoachRequestDto userCoachRequestDto);
 
     UpdateUserRequestDto toDto(UpdateUserCoachRequestDto updateUserCoachRequestDto);
+
+    User toEntity(UserSignUpDto userSignUpDto);
 }

@@ -5,7 +5,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${SPRING_DATASOURCE_URL}
-    username: ${DB_USERNAME}
+    username: userDB
     password: ${db_password}
   webSiteUrlDev: "http://localhost:8090"
 

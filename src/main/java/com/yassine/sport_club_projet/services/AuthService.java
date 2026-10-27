@@ -2,32 +2,38 @@ package com.yassine.sport_club_projet.services;
 
 import com.yassine.sport_club_projet.dto.AuthUserDto;
 import com.yassine.sport_club_projet.dto.JwtResponseDto;
+import com.yassine.sport_club_projet.dto.UserSignUpDto;
+import com.yassine.sport_club_projet.entites.Role;
 import com.yassine.sport_club_projet.entites.User;
 import com.yassine.sport_club_projet.exceptions.UserNotFoundException;
+import com.yassine.sport_club_projet.mapper.UserMapper;
 import com.yassine.sport_club_projet.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Bean;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+    @Value("${app.jwt.tokenRefreshExpirationTime}")
+    private long tokenRefreshExpirationTime;
 
     public JwtResponseDto login(@Valid AuthUserDto authUserDto, HttpServletResponse response, HttpServletRequest request) {
         try {
@@ -39,19 +45,7 @@ public class AuthService {
             );
 
             User user = userRepository.findByEmail(authUserDto.getEmail()).orElseThrow();
-            String tokenAccess = jwtService.generateAccessToken(user, request);
-            String tokenRefresh = jwtService.generateRefreshToken(user, request);
-
-            // for save refresh token in cookie
-            ResponseCookie cookie = ResponseCookie.from("refreshToken", tokenRefresh)
-                    .httpOnly(true)
-                    .secure(false)
-                    .path("/")
-                    .maxAge(7 * 24 * 60 * 60)
-                    .sameSite("Lax")
-                    .build();
-
-            response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+            String tokenAccess = getTokenAccess(response, request, user);
             // send refresh token in header
             return new JwtResponseDto(tokenAccess);
         }
@@ -76,5 +70,31 @@ public class AuthService {
         String email = jwtService.getEmail(refreshToken);
         var user = userRepository.findByEmail(email).orElseThrow();
         return jwtService.generateAccessToken(user , request);
+    }
+
+    public JwtResponseDto signUp(@Valid UserSignUpDto userSignUpDto, HttpServletResponse response, HttpServletRequest request) {
+        var user = userMapper.toEntity(userSignUpDto);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.MEMBER);
+        userRepository.save(user);
+        getTokenAccess(response,request,user);
+        return new JwtResponseDto(getTokenAccess(response,request,user));
+    }
+
+    private String getTokenAccess(HttpServletResponse response, HttpServletRequest request, User user) {
+        String tokenAccess = jwtService.generateAccessToken(user, request);
+        String tokenRefresh = jwtService.generateRefreshToken(user, request);
+
+        // for save refresh token in cookie
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", tokenRefresh)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(tokenRefreshExpirationTime)
+                .sameSite("Lax")
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        return tokenAccess;
     }
 }

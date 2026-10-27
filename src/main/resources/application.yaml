@@ -5,20 +5,11 @@ spring:
   profiles:
     active: dev
 
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${DB_USERNAME}
-    password: ${db_user_password} 
-
   jpa:
     show-sql: true
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    properties:
-      hibernate:
-        globally_quoted_identifiers: true
 
   flyway:
     enabled: true

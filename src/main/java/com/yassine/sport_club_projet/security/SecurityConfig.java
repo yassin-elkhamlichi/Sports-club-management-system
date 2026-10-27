@@ -44,6 +44,7 @@ public class SecurityConfig {
 
                         // Public endpoints
                         .requestMatchers("/user/login").permitAll()
+                        .requestMatchers("/user/signup").permitAll()
                         .requestMatchers("/errors").permitAll()
                         .requestMatchers("/v3/api-docs", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
                         .permitAll()
