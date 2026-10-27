@@ -26,7 +26,7 @@ services:
     container_name: sport-club-app
     build: .
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3370/sportClub
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/sportClub
       SPRING_DATASOURCE_USERNAME: userDB
       APP_JWT_TOKENACCESSEXPIRATIONTIME: ${JWT_ACCESS_EXPIRATION}
       APP_JWT_TOKENREFRESHEXPIRATIONTIME: ${JWT_REFRESH_EXPIRATION}
