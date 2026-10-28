@@ -2,7 +2,7 @@ package com.yassine.sport_club_projet.services;
 
 import com.yassine.sport_club_projet.dto.*;
 import com.yassine.sport_club_projet.entites.Player;
-import com.yassine.sport_club_projet.entites.Role;
+import com.yassine.sport_club_projet.entites.enums.Role;
 import com.yassine.sport_club_projet.entites.Team;
 import com.yassine.sport_club_projet.entites.User;
 import com.yassine.sport_club_projet.exceptions.PlayerNotFoundException;

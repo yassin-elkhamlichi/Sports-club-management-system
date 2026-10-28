@@ -2,19 +2,16 @@ package com.yassine.sport_club_projet.services;
 
 import com.yassine.sport_club_projet.dto.TicketResponseDto;
 import com.yassine.sport_club_projet.entites.*;
+import com.yassine.sport_club_projet.entites.enums.Role;
 import com.yassine.sport_club_projet.exceptions.*;
 import com.yassine.sport_club_projet.repositories.*;
-import org.antlr.v4.runtime.misc.LogManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;

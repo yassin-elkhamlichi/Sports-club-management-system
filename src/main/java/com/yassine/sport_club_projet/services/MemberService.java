@@ -2,8 +2,7 @@ package com.yassine.sport_club_projet.services;
 
 
 import com.yassine.sport_club_projet.dto.*;
-import com.yassine.sport_club_projet.entites.Member;
-import com.yassine.sport_club_projet.entites.Role;
+import com.yassine.sport_club_projet.entites.enums.Role;
 import com.yassine.sport_club_projet.entites.User;
 import com.yassine.sport_club_projet.exceptions.MemberNotFoundException;
 import com.yassine.sport_club_projet.exceptions.UserAlreadyExistException;
@@ -13,10 +12,7 @@ import com.yassine.sport_club_projet.mapper.UserMapper;
 import com.yassine.sport_club_projet.repositories.MemberRepository;
 import com.yassine.sport_club_projet.repositories.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

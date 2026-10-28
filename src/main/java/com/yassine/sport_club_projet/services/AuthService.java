@@ -1,18 +1,17 @@
 package com.yassine.sport_club_projet.services;
 
-import com.yassine.sport_club_projet.dto.AuthUserDto;
-import com.yassine.sport_club_projet.dto.JwtResponseDto;
-import com.yassine.sport_club_projet.dto.UserSignUpDto;
-import com.yassine.sport_club_projet.entites.Role;
+import com.yassine.sport_club_projet.dto.*;
+import com.yassine.sport_club_projet.entites.enums.Role;
 import com.yassine.sport_club_projet.entites.User;
+import com.yassine.sport_club_projet.entites.UserIdentity;
 import com.yassine.sport_club_projet.exceptions.UserNotFoundException;
+import com.yassine.sport_club_projet.mapper.UserIdentityMapper;
 import com.yassine.sport_club_projet.mapper.UserMapper;
+import com.yassine.sport_club_projet.repositories.UserIdentityRepository;
 import com.yassine.sport_club_projet.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -32,6 +32,8 @@ public class AuthService {
     private final JwtService jwtService;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final UserIdentityRepository userIdentityRepository;
+    private final UserIdentityMapper userIdentityMapper;
     @Value("${app.jwt.tokenRefreshExpirationTime}")
     private long tokenRefreshExpirationTime;
 
@@ -96,5 +98,40 @@ public class AuthService {
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         return tokenAccess;
+    }
+
+    @Transactional
+    public User findOrCreateOauthUser(
+            OauthResponseDto oauthResponseDto
+    ){
+        var userIdentity = userIdentityRepository.findByProviderAndProviderUserId(oauthResponseDto.getProvider(),oauthResponseDto.getProviderUserId());
+
+        if(userIdentity.isPresent()){
+            return userIdentity.get().getUser();
+        }
+
+        var existsUser = userRepository.findByEmail(oauthResponseDto.getEmail());
+        UserIdentity identity = userIdentityMapper.toEntity(oauthResponseDto);
+        if(existsUser.isPresent()){
+            User user =  existsUser.get();
+            identity.setUser(user);
+
+            if(oauthResponseDto.getEmailVerified() && !user.getEmailVerified()){
+                user.setEmailVerified(true);
+            }
+
+            user.setUserIdentity(identity);
+            userRepository.save(user);
+            return  user;
+        }
+
+        // 3. Create new user
+        User newUser = userMapper.toEntity(oauthResponseDto);
+        newUser.setUserIdentity(identity);
+        identity.setUser(newUser);
+        newUser.setRole(Role.MEMBER);
+        userRepository.save(newUser);
+
+        return newUser;
     }
 }

@@ -2,7 +2,7 @@ package com.yassine.sport_club_projet.services;
 
 import com.yassine.sport_club_projet.dto.SubscriptionDto;
 import com.yassine.sport_club_projet.entites.Member;
-import com.yassine.sport_club_projet.entites.Role;
+import com.yassine.sport_club_projet.entites.enums.Role;
 import com.yassine.sport_club_projet.entites.User;
 import com.yassine.sport_club_projet.exceptions.MemberNotFoundException;
 import com.yassine.sport_club_projet.repositories.MemberRepository;

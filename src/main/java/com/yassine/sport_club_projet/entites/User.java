@@ -1,5 +1,6 @@
 package com.yassine.sport_club_projet.entites;
 
+import com.yassine.sport_club_projet.entites.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,8 +46,8 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Member member;
 
-    @OneToOne(mappedBy = "user")
-    private UserIdentities userIdentities;
+    @OneToOne(mappedBy = "user" , cascade = CascadeType.ALL)
+    private UserIdentity userIdentity;
 
     public User addUser(String email , String password , String firstname , String lastname , String phone , Role role){
         this.email = email;

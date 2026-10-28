@@ -1,6 +1,6 @@
 package com.yassine.sport_club_projet.services;
 
-import com.yassine.sport_club_projet.entites.Role;
+import com.yassine.sport_club_projet.entites.enums.Role;
 import com.yassine.sport_club_projet.entites.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -13,12 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 
 @Service
 @NoArgsConstructor

@@ -1,6 +1,6 @@
 package com.yassine.sport_club_projet.filter;
 
-import com.yassine.sport_club_projet.entites.Role;
+import com.yassine.sport_club_projet.entites.enums.Role;
 import com.yassine.sport_club_projet.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

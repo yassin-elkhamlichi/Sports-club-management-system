@@ -39,22 +39,11 @@ public class SecurityConfig {
     }
     @Bean
     @Order(1)
-    public SecurityFilterChain oauthChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain oauthChain(HttpSecurity http, OAuth2SuccessHandler oAuth2SuccessHandler) throws Exception {
         http
                 .securityMatcher("/oauth2/**", "/login/oauth2/**")
                 .authorizeHttpRequests(a -> a.anyRequest().permitAll())
-                .oauth2Login(o -> o.successHandler(
-                        (req, res, auth) -> {
-                            OAuth2User user = (OAuth2User) auth.getPrincipal();
-                            res.setContentType("application/json");
-
-                            // FIX: Configure the ObjectMapper to handle Java 8 dates
-                            ObjectMapper mapper = new ObjectMapper();
-                            mapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
-                            mapper.disable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-                            res.getWriter().write(mapper.writeValueAsString(user.getAttributes()));
-                        }));
+                .oauth2Login(o -> o.successHandler(oAuth2SuccessHandler));
         return http.build();
     }
 

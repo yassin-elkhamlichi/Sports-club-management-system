@@ -1,13 +1,12 @@
 package com.yassine.sport_club_projet.services;
 
 import com.yassine.sport_club_projet.dto.*;
-import com.yassine.sport_club_projet.entites.Role;
+import com.yassine.sport_club_projet.entites.enums.Role;
 import com.yassine.sport_club_projet.entites.Team;
 import com.yassine.sport_club_projet.exceptions.*;
 import com.yassine.sport_club_projet.mapper.CoachMapper;
 import com.yassine.sport_club_projet.mapper.UserMapper;
 import com.yassine.sport_club_projet.repositories.CoachRepository;
-import com.yassine.sport_club_projet.repositories.PlayerRepository;
 import com.yassine.sport_club_projet.repositories.TeamRepository;
 import com.yassine.sport_club_projet.repositories.UserRepository;
 import lombok.AllArgsConstructor;

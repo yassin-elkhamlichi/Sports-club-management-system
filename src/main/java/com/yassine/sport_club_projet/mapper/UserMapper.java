@@ -15,4 +15,9 @@ public interface UserMapper {
     UpdateUserRequestDto toDto(UpdateUserCoachRequestDto updateUserCoachRequestDto);
 
     User toEntity(UserSignUpDto userSignUpDto);
+    @Mapping(target = "role", ignore = true)
+    @Mapping(target = "userIdentity" , ignore = true)
+    @Mapping(target = "lastname", source = "familyName")
+    @Mapping(target = "firstname", source = "givenName")
+    User toEntity(OauthResponseDto oauthResponseDto);
 }

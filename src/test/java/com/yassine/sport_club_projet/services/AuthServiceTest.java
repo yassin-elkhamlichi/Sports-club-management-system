@@ -1,7 +1,7 @@
 package com.yassine.sport_club_projet.services;
 
 import com.yassine.sport_club_projet.dto.*;
-import com.yassine.sport_club_projet.entites.Role;
+import com.yassine.sport_club_projet.entites.enums.Role;
 import com.yassine.sport_club_projet.entites.User;
 import com.yassine.sport_club_projet.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
