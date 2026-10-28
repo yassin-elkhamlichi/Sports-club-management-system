@@ -17,7 +17,7 @@ public class User {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
     @Column(name = "firstname", nullable = false, length = 100)
@@ -33,6 +33,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(name="email_verified")
+    private Boolean emailVerified = false;
+
     @OneToOne(mappedBy = "user")
     private Admin admin;
 
@@ -41,6 +44,9 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Member member;
+
+    @OneToOne(mappedBy = "user")
+    private UserIdentities userIdentities;
 
     public User addUser(String email , String password , String firstname , String lastname , String phone , Role role){
         this.email = email;
