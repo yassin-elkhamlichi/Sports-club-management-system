@@ -1,7 +1,4 @@
 spring:
-  config:
-    import:
-      - "optional:configtree:/run/secrets/"
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${SPRING_DATASOURCE_URL}
@@ -9,7 +6,13 @@ spring:
     password: ${db_password}
   webSiteUrlDev: "http://localhost:8090"
 
-
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
 app:
   jwt:
     secret: ${jwt_secret}

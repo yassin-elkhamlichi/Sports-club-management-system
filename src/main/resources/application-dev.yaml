@@ -7,8 +7,17 @@ spring:
 
   webSiteUrlDev: "http://localhost:8080"
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
 app:
   jwt:
     secret: ${JWT_SECRET}
     tokenAccessExpirationTime: ${JWT_ACCESS_EXPIRATION}
     tokenRefreshExpirationTime: ${JWT_REFRESH_EXPIRATION}
+
+

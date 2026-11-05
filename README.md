@@ -60,7 +60,7 @@ The system is designed following the standard Controller-Service-Repository patt
 
 This is the easiest way to get the system running, as it sets up both the MySQL database and the Spring Boot application.
 
-1.  **Configure Secrets:** Ensure you have the `secrets/` directory created at the root with the required files (`db_password.txt`, `db_root_password.txt`, `jwt_secret.txt`). Add your desired secure passwords/keys inside these files.
+1.  **Configure Secrets:** Ensure you have the `run/secrets/` directory created at the root with the required files (`db_password.txt`, `db_root_password.txt`, `jwt_secret.txt`). Add your desired secure passwords/keys inside these files.
 2.  **Configure Environment:** You need a `.env` file at the root. You can copy the template:
     ```bash
     cp .env.example .env

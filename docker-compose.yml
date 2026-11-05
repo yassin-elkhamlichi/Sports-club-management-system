@@ -30,10 +30,12 @@ services:
       SPRING_DATASOURCE_USERNAME: userDB
       APP_JWT_TOKENACCESSEXPIRATIONTIME: ${JWT_ACCESS_EXPIRATION}
       APP_JWT_TOKENREFRESHEXPIRATIONTIME: ${JWT_REFRESH_EXPIRATION}
+      CLIENT_ID: 943107311454-ekqj8a5lq4kv78o5ljtnl45edeosjgpm.apps.googleusercontent.com
       SPRING_PROFILES_ACTIVE: prod
     secrets:
       - db_password
       - jwt_secret
+      - CLIENT_SECRET
     ports:
       - "8090:8080"
     depends_on:
@@ -45,11 +47,13 @@ services:
 
 secrets:
   db_root_password:
-    file: ./secrets/db_root_password.txt
+    file: run/secrets/db_root_password.txt
   jwt_secret:
-    file: ./secrets/jwt_secret.txt
+    file: run/secrets/jwt_secret.txt
   db_password:
-    file: secrets/db_password.txt
+    file: run/secrets/db_password.txt
+  CLIENT_SECRET:
+    file: run/secrets/CLIENT_SECRET.txt
 
 volumes:
   app-data:
